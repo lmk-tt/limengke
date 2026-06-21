@@ -1,0 +1,2138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中天项目UI规范</title>
+<style>
+/* ============================================================
+   GUIDE PAGE 自身样式（仅用于本规范文档排版，新项目不需要）
+   ============================================================ */
+:root {
+    --primary-color: #004EA1;
+    --accent-color: #FF8D1C;
+    --danger-color: #EF4444;
+    --success-color: #10B981;
+    --bg-light: #F8FAFC;
+    --border-color: #E2E8F0;
+    --text-dark: #1E293B;
+    --text-secondary: #64748B;
+    --text-muted: #94A3B8;
+    --sidebar-width: 200px;
+    --header-height: 60px;
+    --icon-size-nav: 18px;
+    --icon-size-action: 14px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; }
+body { background: #F1F5F9; color: var(--text-dark); }
+
+/* 规范文档布局 */
+.guide-layout { display: flex; min-height: 100vh; }
+.guide-nav {
+    width: 160px; background: #fff; border-right: 1px solid var(--border-color);
+    position: fixed; top: 0; left: 0; height: 100vh; overflow-y: auto;
+    display: flex; flex-direction: column;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.04);
+    z-index: 100;
+}
+.guide-nav-header {
+    padding: 12px 12px 10px; border-bottom: 1px solid var(--border-color);
+    background: linear-gradient(135deg, var(--primary-color) 0%, #0062cc 100%);
+    color: #fff;
+}
+.guide-nav-header h2 { font-size: 0.75rem; font-weight: 700; margin-bottom: 2px; }
+.guide-nav-header p { font-size: 0.6rem; opacity: 0.8; }
+.guide-nav-section { padding: 6px 0; }
+.guide-nav-section-title {
+    padding: 6px 12px 3px; font-size: 0.6rem; font-weight: 700;
+    color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;
+}
+.guide-nav a {
+    display: block; padding: 5px 12px; font-size: 0.72rem; color: var(--text-secondary);
+    text-decoration: none; transition: 0.15s; border-left: 2px solid transparent;
+}
+.guide-nav a:hover { background: #F8FAFC; color: var(--primary-color); border-left-color: rgba(0,78,161,0.3); }
+
+.guide-content { margin-left: 160px; padding: 20px 24px; max-width: none; width: calc(100% - 160px); }
+
+/* 章节标题 */
+.section { margin-bottom: 60px; }
+.section-title {
+    font-size: 1.4rem; font-weight: 800; color: var(--text-dark);
+    padding-bottom: 12px; border-bottom: 3px solid var(--primary-color);
+    margin-bottom: 28px; display: flex; align-items: center; gap: 10px;
+}
+.section-title span { font-size: 0.75rem; font-weight: 500; color: var(--text-secondary); margin-left: 6px; }
+.subsection-title {
+    font-size: 1rem; font-weight: 700; color: var(--text-dark);
+    margin: 28px 0 14px; padding-left: 10px; border-left: 3px solid var(--accent-color);
+}
+
+/* 预览块 + 代码块 */
+.preview-block {
+    background: #fff; border: 1px solid var(--border-color);
+    border-radius: 8px; overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    margin-bottom: 12px;
+}
+.preview-label {
+    padding: 8px 16px; background: #F8FAFC; border-bottom: 1px solid var(--border-color);
+    font-size: 0.75rem; font-weight: 600; color: var(--text-secondary);
+    display: flex; align-items: center; gap: 6px;
+}
+.preview-body { padding: 24px 20px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.preview-body.column { flex-direction: column; align-items: flex-start; }
+
+.code-block {
+    background: #1E293B; color: #E2E8F0; padding: 16px 20px;
+    border-radius: 8px; font-size: 0.8rem; font-family: "Fira Code", "Courier New", monospace;
+    line-height: 1.7; overflow-x: auto; margin-bottom: 20px;
+    border: 1px solid #334155;
+    white-space: pre;
+}
+.code-comment { color: #64748B; }
+.code-tag { color: #93C5FD; }
+.code-attr { color: #FCA5A5; }
+.code-value { color: #86EFAC; }
+
+/* 色板 */
+.color-grid { display: grid; grid-template-columns: repeat(auto-fill, 120px); gap: 14px; }
+.color-swatch {
+    border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.color-fill { height: 60px; }
+.color-info { padding: 8px 10px; background: #fff; }
+.color-name { font-size: 0.72rem; font-weight: 600; color: var(--text-dark); }
+.color-hex { font-size: 0.7rem; color: var(--text-secondary); font-family: monospace; }
+
+/* 字号展示 */
+.type-row { padding: 10px 0; border-bottom: 1px dashed var(--border-color); display: flex; align-items: baseline; gap: 16px; }
+.type-meta { font-size: 0.75rem; color: var(--text-muted); min-width: 160px; }
+
+/* 间距展示 */
+.space-row { display: flex; align-items: center; gap: 14px; padding: 8px 0; border-bottom: 1px dashed var(--border-color); }
+.space-box { background: rgba(0,78,161,0.15); border: 1px solid rgba(0,78,161,0.3); border-radius: 2px; height: 20px; }
+.space-meta { font-size: 0.75rem; color: var(--text-secondary); min-width: 80px; font-family: monospace; }
+
+/* 骨架模板高亮 */
+.template-box {
+    background: #0F172A; color: #CBD5E1; padding: 24px;
+    border-radius: 8px; font-size: 0.8rem; font-family: "Fira Code", "Courier New", monospace;
+    line-height: 1.7; overflow-x: auto; border: 1px solid #1E293B;
+    white-space: pre;
+}
+
+/* ============================================================
+   以下为实际 B 端系统组件样式（从两个源系统提炼，直接复用）
+   ============================================================ */
+
+/* --- Buttons --- */
+.btn {
+    padding: 8px 18px; border-radius: 4px; border: none; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 0.85rem; transition: 0.2s; font-weight: 500;
+}
+.btn .lucide { width: var(--icon-size-action); height: var(--icon-size-action); }
+.btn-primary { background: var(--primary-color); color: #fff; }
+.btn-primary:hover { background: #003d7f; }
+.btn-accent { background: var(--accent-color); color: #fff; }
+.btn-accent:hover { background: #e67d0f; }
+.btn-outline {
+    background: #fff; border: 1px solid var(--border-color); color: #64748B;
+}
+.btn-outline:hover { background: #F8FAFC; border-color: var(--primary-color); color: var(--primary-color); }
+.btn-danger { background: var(--danger-color); color: #fff; }
+.btn-danger:hover { background: #dc2626; }
+.btn-sm { padding: 6px 12px; font-size: 0.8rem; }
+.btn-icon {
+    padding: 6px; border-radius: 4px; background: transparent; border: none;
+    cursor: pointer; display: inline-flex; align-items: center; color: #64748B; transition: 0.2s;
+}
+.btn-icon:hover { background: #F1F5F9; color: var(--primary-color); }
+.btn-icon .lucide { width: 16px; height: 16px; }
+
+/* --- Status Badges --- */
+.badge {
+    display: inline-block; padding: 3px 10px; border-radius: 10px;
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.3px;
+}
+.badge-success { background: #DCFCE7; color: #15803D; }
+.badge-danger { background: #FEE2E2; color: #DC2626; }
+.badge-warning { background: #FEF3C7; color: #B45309; }
+.badge-info { background: #DBEAFE; color: #1D4ED8; }
+.badge-secondary { background: #F1F5F9; color: #64748B; }
+
+/* --- Status Dot --- */
+.status-dot {
+    display: inline-block; width: 8px; height: 8px;
+    border-radius: 50%; margin-right: 5px;
+}
+.dot-online { background: var(--success-color); box-shadow: 0 0 6px var(--success-color); }
+.dot-offline { background: var(--danger-color); }
+.dot-warning { background: var(--accent-color); box-shadow: 0 0 6px var(--accent-color); }
+
+/* --- Cards / Panels --- */
+.data-card {
+    background: #fff; border-radius: 8px; border: 1px solid var(--border-color);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+.card-header {
+    padding: 14px 20px; border-bottom: 1px solid var(--border-color);
+    display: flex; justify-content: space-between; align-items: center;
+}
+.card-header h3 { font-size: 0.95rem; color: var(--primary-color); font-weight: 700; }
+.card-body { padding: 20px; }
+
+/* --- Table --- */
+.table-wrapper { overflow-x: auto; padding: 0 20px; }
+table { width: 100%; border-collapse: collapse; }
+th {
+    background: #F5F8FF; text-align: left; padding: 11px 16px;
+    font-weight: 600; color: var(--primary-color); border-bottom: 2px solid var(--border-color);
+    font-size: 0.82rem; white-space: nowrap;
+}
+td {
+    padding: 11px 16px; border-bottom: 1px solid var(--border-color);
+    font-size: 0.88rem; color: #334155; vertical-align: middle;
+}
+tr:hover td { background: #F9FAFB; }
+
+/* --- Forms --- */
+.form-group { margin-bottom: 16px; }
+.form-group label {
+    display: block; font-size: 0.85rem; color: #475569;
+    margin-bottom: 6px; font-weight: 600;
+}
+.form-control {
+    width: 100%; padding: 8px 12px; border: 1px solid var(--border-color);
+    border-radius: 4px; outline: none; font-size: 0.88rem; color: var(--text-dark);
+    background: #fff; transition: 0.2s;
+}
+.form-control:focus { border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0,78,161,0.1); }
+.form-control::placeholder { color: var(--text-muted); }
+textarea.form-control { resize: vertical; min-height: 80px; line-height: 1.6; }
+
+/* --- Search Bar --- */
+.search-group { display: flex; gap: 8px; align-items: center; }
+.search-group input {
+    padding: 8px 14px; border: 1px solid var(--border-color); border-radius: 4px;
+    outline: none; font-size: 0.88rem; background: #fff; flex: 1;
+    transition: 0.2s;
+}
+.search-group input:focus { border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0,78,161,0.1); }
+
+/* --- Custom Select --- */
+.select-wrapper { position: relative; }
+.form-select {
+    width: 100%; padding: 8px 32px 8px 12px; border: 1px solid var(--border-color);
+    border-radius: 4px; font-size: 0.86rem; background: #fff; color: var(--text-dark);
+    cursor: pointer; outline: none; display: flex; align-items: center;
+    justify-content: space-between; user-select: none; transition: 0.2s;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 2l4 4 4-4' stroke='%2394A3B8' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 12px center;
+}
+.select-wrapper.open .form-select {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0,78,161,0.1);
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 2l4 4 4-4' stroke='%23004EA1' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");
+}
+.select-menu {
+    position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+    background: #fff; border: 1px solid #CBD5E1; border-radius: 6px;
+    box-shadow: 0 12px 30px rgba(15,23,42,0.12); z-index: 200;
+    max-height: 220px; overflow-y: auto; padding: 4px 0; display: none;
+}
+.select-menu::-webkit-scrollbar { width: 6px; }
+.select-menu::-webkit-scrollbar-track { background: #F9FAFB; border-radius: 3px; }
+.select-menu::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 3px; }
+.select-menu::-webkit-scrollbar-thumb:hover { background: #9CA3AF; }
+.select-wrapper.open .select-menu { display: block; }
+.select-option {
+    padding: 8px 14px; font-size: 0.86rem; color: #0F172A;
+    cursor: pointer; display: flex; align-items: center; transition: background 0.15s;
+}
+.select-option:hover { background: #EFF6FF; color: var(--primary-color); }
+.select-option.active {
+    background: #DBEAFE; color: var(--primary-color);
+    font-weight: 600; border-left: 3px solid var(--primary-color);
+}
+.select-option.disabled { cursor: not-allowed; opacity: 0.5; pointer-events: none; }
+
+/* --- Upload Dropzone --- */
+.upload-dropzone {
+    border: 1px dashed #CBD5E1; border-radius: 6px; padding: 20px;
+    background: #F8FAFF; cursor: pointer; display: flex; align-items: center; gap: 12px;
+    transition: 0.2s;
+}
+.upload-dropzone:hover { border-color: var(--primary-color); background: #F1F5FF; }
+.upload-dropzone-icon {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(0,78,161,0.08); display: flex; align-items: center;
+    justify-content: center; color: var(--primary-color); flex-shrink: 0;
+}
+.upload-dropzone-icon .lucide { width: 18px; height: 18px; }
+.upload-dropzone-text-main { font-size: 0.86rem; font-weight: 500; color: var(--text-dark); }
+.upload-dropzone-text-sub { font-size: 0.78rem; color: var(--text-secondary); margin-top: 2px; }
+
+/* --- Modal --- */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.4); display: flex; justify-content: center;
+    align-items: center; z-index: 1000;
+}
+.modal-card {
+    background: #fff; width: 480px; border-radius: 8px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.15); overflow: hidden;
+    animation: modalIn 0.2s ease-out;
+}
+@keyframes modalIn { from { transform: scale(0.98); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.modal-header {
+    padding: 16px 20px; background: #F8FAFC;
+    border-bottom: 1px solid var(--border-color);
+    display: flex; justify-content: space-between; align-items: center;
+}
+.modal-header h3 { font-size: 0.95rem; color: var(--primary-color); font-weight: 700; }
+.modal-header .btn-icon { width: 28px; height: 28px; border-radius: 50%; }
+.modal-body { padding: 24px 20px; }
+.modal-footer {
+    padding: 12px 20px; border-top: 1px solid var(--border-color);
+    display: flex; justify-content: flex-end; gap: 10px; background: #F8FAFC;
+}
+
+/* --- Pagination --- */
+.pagination {
+    display: flex; justify-content: center; align-items: center; gap: 16px;
+    padding: 14px 20px; border-top: 1px solid var(--border-color); background: #F8FAFC;
+}
+.pagination-btn {
+    padding: 7px 14px; border-radius: 4px; border: 1px solid var(--border-color);
+    background: #fff; cursor: pointer; display: inline-flex; align-items: center;
+    gap: 5px; font-size: 0.85rem; transition: 0.2s; color: var(--text-dark);
+}
+.pagination-btn:hover:not(:disabled) { border-color: var(--primary-color); color: var(--primary-color); background: #F8FAFC; }
+.pagination-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.pagination-btn .lucide { width: 14px; height: 14px; }
+.pagination-info { font-size: 0.85rem; color: #64748B; min-width: 120px; text-align: center; }
+
+/* --- Toggle Switch --- */
+.switch { position: relative; display: inline-block; width: 36px; height: 20px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+    position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+    background: #CBD5E1; transition: 0.3s; border-radius: 20px;
+}
+.slider:before {
+    position: absolute; content: ""; height: 14px; width: 14px;
+    left: 3px; bottom: 3px; background: #fff; transition: 0.3s; border-radius: 50%;
+}
+input:checked + .slider { background: var(--success-color); }
+input:checked + .slider:before { transform: translateX(16px); }
+
+/* --- Alarm Toast --- */
+.alarm-toast-container {
+    position: fixed; bottom: 20px; right: 20px; width: 300px;
+    display: flex; flex-direction: column; gap: 10px; z-index: 1000;
+}
+.alarm-toast {
+    background: #fff; border-left: 4px solid var(--danger-color);
+    padding: 12px 14px; border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08); animation: slideIn 0.3s ease;
+}
+@keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+.alarm-toast h4 {
+    color: var(--danger-color); font-size: 0.85rem;
+    margin-bottom: 4px; display: flex; align-items: center; gap: 6px;
+}
+.alarm-toast h4 .lucide { width: 14px; height: 14px; }
+.alarm-toast p { font-size: 0.8rem; color: var(--text-secondary); }
+
+/* --- Sidebar Nav (used in demo) --- */
+.demo-aside {
+    width: 180px; background: #fff; border-right: 1px solid var(--border-color);
+    border-radius: 0 0 0 8px; flex-shrink: 0;
+    box-shadow: 4px 0 10px rgba(0,0,0,0.03);
+}
+.demo-nav-item {
+    padding: 12px 20px; display: flex; align-items: center; color: #64748B;
+    cursor: pointer; transition: 0.2s; border-right: 3px solid transparent; font-size: 0.88rem;
+}
+.demo-nav-item:hover { background: rgba(0,78,161,0.04); color: var(--primary-color); }
+.demo-nav-item.active {
+    background: linear-gradient(to right, rgba(0,78,161,0.08), rgba(0,78,161,0.01));
+    color: var(--primary-color); border-right-color: var(--primary-color); font-weight: 600;
+}
+.demo-nav-item .lucide { margin-right: 8px; width: 16px; height: 16px; }
+
+/* demo 二级菜单 */
+.demo-nav-item.has-submenu::after {
+    content: ""; width: 12px; height: 12px; margin-left: auto; transition: transform 0.3s;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748B' d='M3 4.5l3 3 3-3z'/%3E%3C/svg%3E") no-repeat center;
+}
+.demo-nav-item.has-submenu.open::after { transform: rotate(180deg); }
+.demo-nav-item.has-submenu.active::after {
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23004EA1' d='M3 4.5l3 3 3-3z'/%3E%3C/svg%3E") no-repeat center;
+}
+.demo-submenu { display: none; background: #FFFFFF; overflow: hidden; max-height: 0; transition: max-height 0.3s ease-out; }
+.demo-submenu.open { display: block; max-height: 300px; }
+.demo-submenu-item {
+    padding: 9px 20px 9px 44px; font-size: 0.83rem; color: #64748B;
+    cursor: pointer; transition: 0.2s; display: flex; align-items: center;
+}
+.demo-submenu-item:hover { background: #F8FAFC; color: var(--primary-color); }
+.demo-submenu-item.active { color: var(--primary-color); font-weight: 600; background: #F1F5F9; }
+.demo-header {
+    height: 52px; background: #fff; border-bottom: 1px solid var(--border-color);
+    display: flex; align-items: center; padding: 0 20px;
+    justify-content: space-between; border-radius: 8px 8px 0 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+.demo-logo { display: flex; align-items: center; gap: 8px; }
+.demo-logo-icon {
+    width: 28px; height: 28px; background: var(--primary-color);
+    border-radius: 6px; display: flex; align-items: center; justify-content: center;
+}
+.demo-logo-icon .lucide { width: 14px; height: 14px; color: #fff; }
+.demo-logo h1 { font-size: 0.95rem; font-weight: 800; color: var(--primary-color); }
+.demo-header-right { display: flex; align-items: center; gap: 14px; }
+.demo-status { display: flex; align-items: center; gap: 6px; font-size: 0.82rem; color: #64748B; }
+
+/* Horizontal divider in preview */
+.preview-divider { width: 100%; height: 1px; background: var(--border-color); margin: 4px 0; }
+
+/* Tag for new/used indicator */
+.tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 600; }
+.tag-new { background: #DCFCE7; color: #16A34A; }
+.tag-note { background: #FEF3C7; color: #B45309; }
+
+/* ============================================================
+   数据可视化组件
+   ============================================================ */
+/* 指标卡片 metric-card */
+.metric-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.metric-card {
+    background: #fff; border-radius: 8px;
+    box-shadow: 0 2px 8px -2px rgba(0,78,161,0.08), 0 4px 12px -4px rgba(0,78,161,0.12);
+    padding: 20px; display: flex; align-items: center; justify-content: space-between;
+    position: relative; overflow: hidden;
+    transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid var(--border-color);
+}
+.metric-card:hover { transform: translateY(-2px);
+    box-shadow: 0 4px 16px -4px rgba(0,78,161,0.12), 0 8px 24px -8px rgba(0,78,161,0.16); }
+.metric-card::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color)); opacity: 0.6;
+}
+.metric-label { font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 6px; }
+.metric-value { font-size: 2rem; line-height: 1.2; font-weight: 700; color: var(--text-dark); font-variant-numeric: tabular-nums; }
+.metric-trend { font-size: 0.78rem; margin-top: 4px; font-weight: 600; }
+.metric-trend.up { color: var(--success-color); }
+.metric-trend.down { color: var(--danger-color); }
+.metric-trend.neutral { color: var(--text-muted); }
+.metric-icon {
+    width: 48px; height: 48px; border-radius: 8px; display: flex;
+    align-items: center; justify-content: center; flex-shrink: 0;
+    transition: transform 300ms ease;
+}
+.metric-card:hover .metric-icon { transform: scale(1.1); }
+.metric-icon .lucide { width: 24px; height: 24px; }
+.metric-icon.blue { background: rgba(0,78,161,0.1); color: var(--primary-color); }
+.metric-icon.orange { background: rgba(255,141,28,0.1); color: var(--accent-color); }
+.metric-icon.green { background: rgba(16,185,129,0.1); color: var(--success-color); }
+.metric-icon.red { background: rgba(239,68,68,0.1); color: var(--danger-color); }
+
+/* 图表容器 */
+.chart-card {
+    background: #fff; border-radius: 8px; border: 1px solid var(--border-color);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+.chart-header {
+    padding: 14px 20px; border-bottom: 1px solid var(--border-color);
+    display: flex; justify-content: space-between; align-items: center;
+}
+.chart-header h3 { font-size: 0.95rem; color: var(--primary-color); font-weight: 700; }
+.chart-tabs { display: flex; gap: 2px; background: #F1F5F9; border-radius: 4px; padding: 2px; }
+.chart-tab {
+    padding: 4px 12px; border-radius: 3px; font-size: 0.78rem; cursor: pointer;
+    color: var(--text-secondary); transition: 0.15s; user-select: none;
+}
+.chart-tab.active { background: #fff; color: var(--primary-color); font-weight: 600;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+.chart-body { padding: 16px 20px; }
+.chart-container { width: 100%; }
+
+/* ============================================================
+   触控屏布局
+   ============================================================ */
+/* 触控屏主体布局演示 */
+.tablet-demo {
+    border: 1px solid var(--border-color); border-radius: 10px; overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    display: flex; flex-direction: column; height: 420px;
+    background: var(--bg-light);
+}
+.tablet-header {
+    height: 56px; background: #fff; border-bottom: 1px solid var(--border-color);
+    display: flex; align-items: center; padding: 0 16px; gap: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04); flex-shrink: 0;
+}
+.tablet-logo { display: flex; align-items: center; gap: 8px; flex: 1; }
+.tablet-logo-icon {
+    width: 32px; height: 32px; background: var(--primary-color);
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+}
+.tablet-logo-icon .lucide { width: 16px; height: 16px; color: #fff; }
+.tablet-logo h1 { font-size: 0.95rem; font-weight: 800; color: var(--primary-color); }
+.tablet-body { display: flex; flex: 1; overflow: hidden; }
+
+/* 触控屏侧边栏 — 窄 + 大图标 */
+.tablet-aside {
+    width: 72px; background: #fff; border-right: 1px solid var(--border-color);
+    display: flex; flex-direction: column; align-items: center; padding: 12px 0; gap: 4px;
+    flex-shrink: 0;
+}
+.tablet-nav-item {
+    width: 52px; height: 52px; min-height: 52px; flex-shrink: 0;
+    border-radius: 10px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; cursor: pointer; transition: 0.2s;
+    color: var(--text-secondary); gap: 3px; border: 2px solid transparent;
+}
+.tablet-nav-item:hover { background: rgba(0,78,161,0.06); color: var(--primary-color); }
+.tablet-nav-item.active {
+    background: rgba(0,78,161,0.1); color: var(--primary-color);
+    border-color: rgba(0,78,161,0.2);
+}
+.tablet-nav-item .lucide { width: 22px; height: 22px; }
+.tablet-nav-label { font-size: 0.6rem; font-weight: 600; line-height: 1; }
+.tablet-main { flex: 1; padding: 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+
+/* 触控屏大方形按钮 */
+.touch-btn-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.touch-btn {
+    aspect-ratio: 1; background: #fff; border: 1px solid var(--border-color);
+    border-radius: 12px; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; cursor: pointer; transition: 0.2s; gap: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.touch-btn:hover { border-color: var(--primary-color); background: rgba(0,78,161,0.03); }
+.touch-btn:active { transform: scale(0.96); }
+.touch-btn .lucide { width: 28px; height: 28px; color: var(--primary-color); }
+.touch-btn span { font-size: 0.75rem; font-weight: 600; color: var(--text-dark); }
+.touch-btn.accent .lucide { color: var(--accent-color); }
+.touch-btn.success .lucide { color: var(--success-color); }
+.touch-btn.danger .lucide { color: var(--danger-color); }
+
+/* 骨架模板中的触控屏 CSS 变量补充 */
+</style>
+</head>
+<body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const targetElement = document.getElementById('colors');
+        if (targetElement) {
+            const offsetTop = targetElement.offsetTop;
+            window.scrollTo({ top: offsetTop, behavior: 'auto' });
+        }
+    });
+</script>
+
+<div class="guide-layout">
+
+<!-- 左侧导航 -->
+<nav class="guide-nav">
+    <div class="guide-nav-header">
+        <h2>中天项目UI规范</h2>
+        <p>ZhongTian UI Style Guide</p>
+    </div>
+    <div class="guide-nav-section">
+        <div class="guide-nav-section-title">视觉基础</div>
+        <a href="#colors">色彩系统</a>
+        <a href="#typography">字体排版</a>
+        <a href="#spacing">间距与圆角</a>
+        <a href="#icons">图标规范</a>
+    </div>
+    <div class="guide-nav-section">
+        <div class="guide-nav-section-title">布局结构</div>
+        <a href="#layout">页面布局</a>
+        <a href="#nav">侧边栏导航</a>
+        <a href="#header">顶部栏</a>
+        <a href="#tablet">触控屏布局</a>
+    </div>
+    <div class="guide-nav-section">
+        <div class="guide-nav-section-title">组件</div>
+        <a href="#buttons">按钮</a>
+        <a href="#badges">徽章 / 状态</a>
+        <a href="#cards">卡片 / 面板</a>
+        <a href="#tables">表格</a>
+        <a href="#forms">表单</a>
+        <a href="#modal">弹窗</a>
+        <a href="#pagination">分页</a>
+        <a href="#toggle">开关</a>
+        <a href="#upload">上传区</a>
+        <a href="#toast">告警 Toast</a>
+        <a href="#charts">数据可视化</a>
+    </div>
+    <div class="guide-nav-section">
+        <div class="guide-nav-section-title">快速开始</div>
+        <a href="#template">新建系统骨架</a>
+        <a href="#tokens">CSS 变量</a>
+    </div>
+</nav>
+
+<!-- 右侧内容 -->
+<div class="guide-content">
+
+<!-- ============================================================
+     新建系统骨架模板
+     ============================================================ -->
+<!-- ============================================================
+     色彩系统
+     ============================================================ -->
+<div class="section" id="colors">
+    <h2 class="section-title">
+        <i data-lucide="palette" style="width:22px;height:22px;color:var(--primary-color)"></i>
+        色彩系统
+    </h2>
+
+    <h3 class="subsection-title">主色调</h3>
+    <div class="color-grid">
+        <div class="color-swatch">
+            <div class="color-fill" style="background:#004EA1"></div>
+            <div class="color-info"><div class="color-name">Primary Blue</div><div class="color-hex">#004EA1</div></div>
+        </div>
+        <div class="color-swatch">
+            <div class="color-fill" style="background:#003d7f"></div>
+            <div class="color-info"><div class="color-name">Primary Hover</div><div class="color-hex">#003d7f</div></div>
+        </div>
+        <div class="color-swatch">
+            <div class="color-fill" style="background:#FF8D1C"></div>
+            <div class="color-info"><div class="color-name">Accent Orange</div><div class="color-hex">#FF8D1C</div></div>
+        </div>
+        <div class="color-swatch">
+            <div class="color-fill" style="background:#e67d0f"></div>
+            <div class="color-info"><div class="color-name">Accent Hover</div><div class="color-hex">#e67d0f</div></div>
+        </div>
+    </div>
+
+    <h3 class="subsection-title">语义色</h3>
+    <div class="color-grid">
+        <div class="color-swatch">
+            <div class="color-fill" style="background:#10B981"></div>
+            <div class="color-info"><div class="color-name">Success</div><div class="color-hex">#10B981</div></div>
+        </div>
+        <div class="color-swatch">
+            <div class="color-fill" style="background:#EF4444"></div>
+            <div class="color-info"><div class="color-name">Danger</div><div class="color-hex">#EF4444</div></div>
+        </div>
+        <div class="color-swatch">
+            <div class="color-fill" style="background:#F59E0B"></div>
+            <div class="color-info"><div class="color-name">Warning</div><div class="color-hex">#F59E0B</div></div>
+        </div>
+        <div class="color-swatch">
+            <div class="color-fill" style="background:#3B82F6"></div>
+            <div class="color-info"><div class="color-name">Info</div><div class="color-hex">#3B82F6</div></div>
+        </div>
+    </div>
+
+    <h3 class="subsection-title">中性色</h3>
+    <div class="color-grid">
+        <div class="color-swatch">
+            <div class="color-fill" style="background:#F8FAFC;border-bottom:1px solid #E2E8F0"></div>
+            <div class="color-info"><div class="color-name">bg-light</div><div class="color-hex">#F8FAFC</div></div>
+        </div>
+        <div class="color-swatch">
+            <div class="color-fill" style="background:#F5F8FF"></div>
+            <div class="color-info"><div class="color-name">Table Head BG</div><div class="color-hex">#F5F8FF</div></div>
+        </div>
+        <div class="color-swatch">
+            <div class="color-fill" style="background:#E2E8F0"></div>
+            <div class="color-info"><div class="color-name">border-color</div><div class="color-hex">#E2E8F0</div></div>
+        </div>
+        <div class="color-swatch">
+            <div class="color-fill" style="background:#334155"></div>
+            <div class="color-info"><div class="color-name">Table TD Text</div><div class="color-hex">#334155</div></div>
+        </div>
+        <div class="color-swatch">
+            <div class="color-fill" style="background:#1E293B"></div>
+            <div class="color-info"><div class="color-name">text-dark</div><div class="color-hex">#1E293B</div></div>
+        </div>
+        <div class="color-swatch">
+            <div class="color-fill" style="background:#64748B"></div>
+            <div class="color-info"><div class="color-name">text-secondary</div><div class="color-hex">#64748B</div></div>
+        </div>
+        <div class="color-swatch">
+            <div class="color-fill" style="background:#94A3B8"></div>
+            <div class="color-info"><div class="color-name">text-muted</div><div class="color-hex">#94A3B8</div></div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ============================================================
+     字体排版
+     ============================================================ -->
+<div class="section" id="typography">
+    <h2 class="section-title">
+        <i data-lucide="type" style="width:22px;height:22px;color:var(--primary-color)"></i>
+        字体排版
+    </h2>
+
+    <div class="preview-block">
+        <div class="preview-label">字体栈</div>
+        <div class="preview-body column">
+            <code style="font-size:0.85rem;background:#F1F5F9;padding:4px 10px;border-radius:4px">"Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif</code>
+        </div>
+    </div>
+
+    <div class="preview-block">
+        <div class="preview-label">字号层次</div>
+        <div class="preview-body column" style="gap:0">
+            <div class="type-row">
+                <div class="type-meta">1.05rem / weight:800<br>系统标题 Logo</div>
+                <div style="font-size:1.05rem;font-weight:800;color:var(--primary-color)">中天智能管理系统</div>
+            </div>
+            <div class="type-row">
+                <div class="type-meta">0.95rem / weight:700<br>卡片标题</div>
+                <div style="font-size:0.95rem;font-weight:700;color:var(--primary-color)">数据列表</div>
+            </div>
+            <div class="type-row">
+                <div class="type-meta">0.9rem / weight:400<br>导航项</div>
+                <div style="font-size:0.9rem">文件管理</div>
+            </div>
+            <div class="type-row">
+                <div class="type-meta">0.88rem / weight:400<br>表格 TD / 正文</div>
+                <div style="font-size:0.88rem;line-height:1.6">这是表格单元格或正文内容，行高 1.6，保持良好的阅读体验。</div>
+            </div>
+            <div class="type-row">
+                <div class="type-meta">0.85rem / weight:600<br>表单标签 / 按钮</div>
+                <div style="font-size:0.85rem;font-weight:600">文件类别</div>
+            </div>
+            <div class="type-row">
+                <div class="type-meta">0.82rem / weight:600<br>表头 TH</div>
+                <div style="font-size:0.82rem;font-weight:600;color:var(--primary-color)">文件名称</div>
+            </div>
+            <div class="type-row">
+                <div class="type-meta">0.78rem / weight:600<br>徽章 / 标签</div>
+                <div style="font-size:0.78rem;font-weight:600">已完成</div>
+            </div>
+            <div class="type-row" style="border:none">
+                <div class="type-meta">0.75rem / weight:400<br>辅助说明 / 小字</div>
+                <div style="font-size:0.75rem;color:var(--text-secondary)">最后更新：2024-03-15</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ============================================================
+     间距与圆角
+     ============================================================ -->
+<div class="section" id="spacing">
+    <h2 class="section-title">
+        <i data-lucide="move" style="width:22px;height:22px;color:var(--primary-color)"></i>
+        间距与圆角
+    </h2>
+
+    <h3 class="subsection-title">间距单位（8pt Grid）</h3>
+    <div style="padding:20px 0">
+        <div class="space-row"><div class="space-box" style="width:4px"></div><div class="space-meta">4px</div><div style="font-size:0.82rem;color:var(--text-secondary)">图标与文字间隙</div></div>
+        <div class="space-row"><div class="space-box" style="width:6px"></div><div class="space-meta">6px</div><div style="font-size:0.82rem;color:var(--text-secondary)">按钮内图标间隙</div></div>
+        <div class="space-row"><div class="space-box" style="width:8px"></div><div class="space-meta">8px</div><div style="font-size:0.82rem;color:var(--text-secondary)">表单控件 padding（竖向）</div></div>
+        <div class="space-row"><div class="space-box" style="width:10px"></div><div class="space-meta">10px</div><div style="font-size:0.82rem;color:var(--text-secondary)">导航图标 margin-right</div></div>
+        <div class="space-row"><div class="space-box" style="width:12px"></div><div class="space-meta">12px</div><div style="font-size:0.82rem;color:var(--text-secondary)">小间距 gap、按钮 padding（横向，sm）</div></div>
+        <div class="space-row"><div class="space-box" style="width:16px"></div><div class="space-meta">16px</div><div style="font-size:0.82rem;color:var(--text-secondary)">表格单元格 padding（横向）</div></div>
+        <div class="space-row"><div class="space-box" style="width:18px"></div><div class="space-meta">18px</div><div style="font-size:0.82rem;color:var(--text-secondary)">按钮 padding（横向，默认）</div></div>
+        <div class="space-row"><div class="space-box" style="width:20px"></div><div class="space-meta">20px</div><div style="font-size:0.82rem;color:var(--text-secondary)">卡片 body padding、主内容区 padding</div></div>
+        <div class="space-row"><div class="space-box" style="width:24px"></div><div class="space-meta">24px</div><div style="font-size:0.82rem;color:var(--text-secondary)">header padding、modal body padding</div></div>
+    </div>
+
+    <h3 class="subsection-title">圆角规则</h3>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;padding:12px 0">
+        <div style="text-align:center">
+            <div style="width:60px;height:60px;background:rgba(0,78,161,0.1);border-radius:4px;border:1px solid rgba(0,78,161,0.2);margin-bottom:6px"></div>
+            <div style="font-size:0.78rem;color:var(--text-secondary)">4px<br>按钮/输入框</div>
+        </div>
+        <div style="text-align:center">
+            <div style="width:60px;height:60px;background:rgba(0,78,161,0.1);border-radius:6px;border:1px solid rgba(0,78,161,0.2);margin-bottom:6px"></div>
+            <div style="font-size:0.78rem;color:var(--text-secondary)">6px<br>列表项/文件项</div>
+        </div>
+        <div style="text-align:center">
+            <div style="width:60px;height:60px;background:rgba(0,78,161,0.1);border-radius:8px;border:1px solid rgba(0,78,161,0.2);margin-bottom:6px"></div>
+            <div style="font-size:0.78rem;color:var(--text-secondary)">8px<br>卡片/弹窗</div>
+        </div>
+        <div style="text-align:center">
+            <div style="width:60px;height:60px;background:rgba(0,78,161,0.1);border-radius:10px;border:1px solid rgba(0,78,161,0.2);margin-bottom:6px"></div>
+            <div style="font-size:0.78rem;color:var(--text-secondary)">10px<br>徽章/Badge</div>
+        </div>
+        <div style="text-align:center">
+            <div style="width:60px;height:60px;background:rgba(0,78,161,0.1);border-radius:50%;border:1px solid rgba(0,78,161,0.2);margin-bottom:6px"></div>
+            <div style="font-size:0.78rem;color:var(--text-secondary)">50%<br>圆形/状态点</div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ============================================================
+     图标规范
+     ============================================================ -->
+<div class="section" id="icons">
+    <h2 class="section-title">
+        <i data-lucide="star" style="width:22px;height:22px;color:var(--primary-color)"></i>
+        图标规范
+    </h2>
+
+    <div class="preview-block">
+        <div class="preview-label">图标库：Lucide Icons</div>
+        <div class="preview-body">
+            <div style="text-align:center">
+                <i data-lucide="layout-dashboard" style="width:18px;height:18px;color:var(--primary-color)"></i>
+                <div style="font-size:0.7rem;color:var(--text-muted);margin-top:4px">nav 18px</div>
+            </div>
+            <div style="text-align:center">
+                <i data-lucide="file-text" style="width:18px;height:18px;color:var(--text-secondary)"></i>
+                <div style="font-size:0.7rem;color:var(--text-muted);margin-top:4px">nav 18px</div>
+            </div>
+            <div style="text-align:center">
+                <i data-lucide="settings" style="width:18px;height:18px;color:var(--text-secondary)"></i>
+                <div style="font-size:0.7rem;color:var(--text-muted);margin-top:4px">nav 18px</div>
+            </div>
+            <div style="text-align:center">
+                <i data-lucide="plus" style="width:14px;height:14px;color:#fff;background:var(--primary-color);padding:3px;border-radius:3px"></i>
+                <div style="font-size:0.7rem;color:var(--text-muted);margin-top:4px">btn 14px</div>
+            </div>
+            <div style="text-align:center">
+                <i data-lucide="upload" style="width:14px;height:14px;color:var(--primary-color)"></i>
+                <div style="font-size:0.7rem;color:var(--text-muted);margin-top:4px">btn 14px</div>
+            </div>
+            <div style="text-align:center">
+                <i data-lucide="trash-2" style="width:14px;height:14px;color:var(--danger-color)"></i>
+                <div style="font-size:0.7rem;color:var(--text-muted);margin-top:4px">action 14px</div>
+            </div>
+            <div style="text-align:center">
+                <i data-lucide="edit" style="width:14px;height:14px;color:var(--text-secondary)"></i>
+                <div style="font-size:0.7rem;color:var(--text-muted);margin-top:4px">action 14px</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="code-block"><span class="code-comment">&lt;!-- 引入方式（放在 &lt;head&gt; 中）--&gt;</span>
+<span class="code-tag">&lt;script</span> <span class="code-attr">src</span>=<span class="code-value">"https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.js"</span><span class="code-tag">&gt;&lt;/script&gt;</span>
+
+<span class="code-comment">&lt;!-- 使用方式 --&gt;</span>
+<span class="code-tag">&lt;i</span> <span class="code-attr">data-lucide</span>=<span class="code-value">"layout-dashboard"</span><span class="code-tag">&gt;&lt;/i&gt;</span>
+<span class="code-tag">&lt;i</span> <span class="code-attr">data-lucide</span>=<span class="code-value">"file-text"</span> <span class="code-attr">style</span>=<span class="code-value">"width:16px;height:16px"</span><span class="code-tag">&gt;&lt;/i&gt;</span>
+
+<span class="code-comment">&lt;!-- 页尾初始化（放在 &lt;/body&gt; 前）--&gt;</span>
+<span class="code-tag">&lt;script&gt;</span>lucide.createIcons();<span class="code-tag">&lt;/script&gt;</span></div>
+</div>
+
+
+<!-- ============================================================
+     布局结构
+     ============================================================ -->
+<div class="section" id="layout">
+    <h2 class="section-title">
+        <i data-lucide="layout" style="width:22px;height:22px;color:var(--primary-color)"></i>
+        页面布局
+    </h2>
+
+    <div class="preview-block">
+        <div class="preview-label">标准三段式布局（header + aside + main）</div>
+        <div style="padding:20px">
+            <!-- 布局示意图 -->
+            <div style="border:1px solid var(--border-color);border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06)">
+                <div class="demo-header">
+                    <div class="demo-logo">
+                        <div class="demo-logo-icon"><i data-lucide="zap" style="width:14px;height:14px;color:#fff"></i></div>
+                        <h1>系统名称</h1>
+                    </div>
+                    <div class="demo-header-right">
+                        <div class="demo-status">
+                            <span class="status-dot dot-online"></span> 系统运行中
+                        </div>
+                        <button class="btn btn-outline btn-sm"><i data-lucide="user" style="width:12px;height:12px"></i> 管理员</button>
+                    </div>
+                </div>
+                <div style="display:flex;height:260px">
+                    <div class="demo-aside">
+                        <div style="padding:14px 0">
+                            <div class="demo-nav-item active"><i data-lucide="layout-dashboard"></i>数据概览</div>
+                            <div class="demo-nav-item"><i data-lucide="file-text"></i>文件管理</div>
+                            <div class="demo-nav-item"><i data-lucide="bar-chart-2"></i>分析报告</div>
+                            <div class="demo-nav-item"><i data-lucide="settings"></i>系统设置</div>
+                        </div>
+                    </div>
+                    <div style="flex:1;padding:16px;background:var(--bg-light);overflow:hidden">
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                            <div class="data-card">
+                                <div class="card-header"><h3>最新文件</h3><button class="btn btn-outline btn-sm"><i data-lucide="plus"></i>新增</button></div>
+                                <div class="card-body" style="font-size:0.82rem;color:var(--text-secondary)">内容区域…</div>
+                            </div>
+                            <div class="data-card">
+                                <div class="card-header"><h3>状态监控</h3></div>
+                                <div class="card-body" style="font-size:0.82rem;color:var(--text-secondary)">内容区域…</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ============================================================
+     侧边栏导航
+     ============================================================ -->
+<div class="section" id="nav">
+    <h2 class="section-title">
+        <i data-lucide="sidebar" style="width:22px;height:22px;color:var(--primary-color)"></i>
+        侧边栏导航
+    </h2>
+
+    <div class="preview-block">
+        <div class="preview-label">导航项状态 + 二级菜单</div>
+        <div style="width:200px;border:1px solid var(--border-color);border-radius:6px;overflow:hidden">
+            <div class="demo-nav-item"><i data-lucide="home"></i>数据概览</div>
+            <div class="demo-nav-item has-submenu open" onclick="toggleDemoSubmenu('sub1', this)" style="border-right:3px solid var(--primary-color);background:linear-gradient(to right,rgba(0,78,161,0.08),rgba(0,78,161,0.01));color:var(--primary-color);font-weight:600">
+                <i data-lucide="folder-open"></i>文件管理
+            </div>
+            <div class="demo-submenu open" id="sub1">
+                <div class="demo-submenu-item active">投标文件</div>
+                <div class="demo-submenu-item" onclick="">技术规范</div>
+                <div class="demo-submenu-item" onclick="">归档记录</div>
+            </div>
+            <div class="demo-nav-item has-submenu" onclick="toggleDemoSubmenu('sub2', this)">
+                <i data-lucide="bar-chart-2"></i>分析报告
+            </div>
+            <div class="demo-submenu" id="sub2">
+                <div class="demo-submenu-item">质量分析</div>
+                <div class="demo-submenu-item">趋势统计</div>
+            </div>
+            <div class="demo-nav-item"><i data-lucide="settings"></i>系统设置</div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ============================================================
+     触控屏布局
+     ============================================================ -->
+<div class="section" id="tablet">
+    <h2 class="section-title">
+        <i data-lucide="tablet" style="width:22px;height:22px;color:var(--primary-color)"></i>
+        触控屏布局
+        <span>适配工业触摸屏设备</span>
+    </h2>
+
+    <p style="font-size:0.88rem;color:var(--text-secondary);margin-bottom:20px;line-height:1.7">
+        触控屏模式适用于工厂现场触摸显示屏。核心差异：<strong>窄侧边栏（72px）仅显示图标+短标签</strong>，与 PC 端 200px 侧边栏区分。
+    </p>
+
+    <h3 class="subsection-title">布局示意（header + 72px aside）</h3>
+    <div class="preview-block">
+        <div class="preview-label">触控屏模式：顶部栏 + 窄侧边栏</div>
+        <div style="padding:20px">
+            <div class="tablet-demo" style="height:300px">
+                <!-- Header -->
+                <div class="tablet-header">
+                    <div class="tablet-logo">
+                        <div class="tablet-logo-icon"><i data-lucide="zap" style="width:16px;height:16px;color:#fff"></i></div>
+                        <h1>中天智能管理系统</h1>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:12px">
+                        <span style="font-size:0.82rem;color:var(--text-secondary)">
+                            <span class="status-dot dot-online" style="margin-right:4px"></span>系统运行中
+                        </span>
+                        <button class="btn-icon"><i data-lucide="bell" style="width:18px;height:18px"></i></button>
+                        <button class="btn-icon"><i data-lucide="user-circle" style="width:18px;height:18px"></i></button>
+                    </div>
+                </div>
+                <!-- Body -->
+                <div class="tablet-body">
+                    <!-- 窄侧边栏 -->
+                    <aside class="tablet-aside">
+                        <div class="tablet-nav-item active">
+                            <i data-lucide="layout-dashboard"></i>
+                            <span class="tablet-nav-label">概览</span>
+                        </div>
+                        <div class="tablet-nav-item">
+                            <i data-lucide="video"></i>
+                            <span class="tablet-nav-label">监控</span>
+                        </div>
+                        <div class="tablet-nav-item">
+                            <i data-lucide="cpu"></i>
+                            <span class="tablet-nav-label">设备</span>
+                        </div>
+                        <div class="tablet-nav-item">
+                            <i data-lucide="bell-ring"></i>
+                            <span class="tablet-nav-label">告警</span>
+                        </div>
+                        <div class="tablet-nav-item">
+                            <i data-lucide="settings"></i>
+                            <span class="tablet-nav-label">设置</span>
+                        </div>
+                    </aside>
+                    <!-- 内容区占位 -->
+                    <div class="tablet-main" style="display:flex;align-items:center;justify-content:center">
+                        <span style="font-size:0.85rem;color:var(--text-muted)">主内容区（flex: 1）</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="code-block"><span class="code-comment">&lt;!-- 触控屏侧边栏 --&gt;</span>
+<span class="code-tag">&lt;aside</span> <span class="code-attr">class</span>=<span class="code-value">"tablet-aside"</span><span class="code-tag">&gt;</span>
+  <span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-value">"tablet-nav-item active"</span><span class="code-tag">&gt;</span>
+    <span class="code-tag">&lt;i</span> <span class="code-attr">data-lucide</span>=<span class="code-value">"layout-dashboard"</span><span class="code-tag">&gt;&lt;/i&gt;</span>
+    <span class="code-tag">&lt;span</span> <span class="code-attr">class</span>=<span class="code-value">"tablet-nav-label"</span><span class="code-tag">&gt;</span>概览<span class="code-tag">&lt;/span&gt;</span>
+  <span class="code-tag">&lt;/div&gt;</span>
+<span class="code-tag">&lt;/aside&gt;</span>
+
+<span class="code-comment">/* 触控屏侧边栏 CSS */</span>
+.tablet-aside { width:72px; background:#fff; border-right:1px solid var(--border-color);
+                display:flex; flex-direction:column; align-items:center; padding:12px 0; gap:4px; }
+.tablet-nav-item { width:52px; height:52px; min-height:52px; flex-shrink:0; border-radius:10px; display:flex;
+                   flex-direction:column; align-items:center; justify-content:center;
+                   cursor:pointer; transition:0.2s; color:var(--text-secondary);
+                   gap:3px; border:2px solid transparent; }
+.tablet-nav-item.active { background:rgba(0,78,161,0.1); color:var(--primary-color);
+                           border-color:rgba(0,78,161,0.2); }
+.tablet-nav-item .lucide { width:22px; height:22px; }
+.tablet-nav-label { font-size:0.6rem; font-weight:600; }</div>
+</div>
+
+
+<!-- ============================================================
+     按钮
+     ============================================================ -->
+<div class="section" id="buttons">
+    <h2 class="section-title">
+        <i data-lucide="mouse-pointer" style="width:22px;height:22px;color:var(--primary-color)"></i>
+        按钮
+    </h2>
+
+    <div class="preview-block">
+        <div class="preview-label">按钮变体</div>
+        <div class="preview-body">
+            <button class="btn btn-primary"><i data-lucide="plus"></i>新增</button>
+            <button class="btn btn-accent"><i data-lucide="upload"></i>上传</button>
+            <button class="btn btn-outline"><i data-lucide="download"></i>导出</button>
+            <button class="btn btn-danger"><i data-lucide="trash-2"></i>删除</button>
+        </div>
+    </div>
+
+    <div class="preview-block">
+        <div class="preview-label">小尺寸按钮（btn-sm）</div>
+        <div class="preview-body">
+            <button class="btn btn-primary btn-sm"><i data-lucide="plus"></i>新增</button>
+            <button class="btn btn-outline btn-sm"><i data-lucide="filter"></i>筛选</button>
+            <button class="btn btn-outline btn-sm">查看详情</button>
+        </div>
+    </div>
+
+    <div class="preview-block">
+        <div class="preview-label">图标按钮（btn-icon）</div>
+        <div class="preview-body">
+            <button class="btn-icon" title="编辑"><i data-lucide="edit"></i></button>
+            <button class="btn-icon" title="删除" style="color:var(--danger-color)"><i data-lucide="trash-2"></i></button>
+            <button class="btn-icon" title="刷新"><i data-lucide="refresh-cw"></i></button>
+            <button class="btn-icon" title="更多"><i data-lucide="more-horizontal"></i></button>
+        </div>
+    </div>
+
+    <div class="code-block"><span class="code-comment">&lt;!-- 主要按钮 --&gt;</span>
+<span class="code-tag">&lt;button</span> <span class="code-attr">class</span>=<span class="code-value">"btn btn-primary"</span><span class="code-tag">&gt;</span><span class="code-tag">&lt;i</span> <span class="code-attr">data-lucide</span>=<span class="code-value">"plus"</span><span class="code-tag">&gt;&lt;/i&gt;</span>新增<span class="code-tag">&lt;/button&gt;</span>
+<span class="code-comment">&lt;!-- 强调按钮 --&gt;</span>
+<span class="code-tag">&lt;button</span> <span class="code-attr">class</span>=<span class="code-value">"btn btn-accent"</span><span class="code-tag">&gt;</span><span class="code-tag">&lt;i</span> <span class="code-attr">data-lucide</span>=<span class="code-value">"upload"</span><span class="code-tag">&gt;&lt;/i&gt;</span>上传<span class="code-tag">&lt;/button&gt;</span>
+<span class="code-comment">&lt;!-- 次要按钮 --&gt;</span>
+<span class="code-tag">&lt;button</span> <span class="code-attr">class</span>=<span class="code-value">"btn btn-outline"</span><span class="code-tag">&gt;</span>取消<span class="code-tag">&lt;/button&gt;</span>
+<span class="code-comment">&lt;!-- 小尺寸 --&gt;</span>
+<span class="code-tag">&lt;button</span> <span class="code-attr">class</span>=<span class="code-value">"btn btn-outline btn-sm"</span><span class="code-tag">&gt;</span>查看<span class="code-tag">&lt;/button&gt;</span>
+<span class="code-comment">&lt;!-- 图标按钮 --&gt;</span>
+<span class="code-tag">&lt;button</span> <span class="code-attr">class</span>=<span class="code-value">"btn-icon"</span><span class="code-tag">&gt;</span><span class="code-tag">&lt;i</span> <span class="code-attr">data-lucide</span>=<span class="code-value">"edit"</span><span class="code-tag">&gt;&lt;/i&gt;&lt;/button&gt;</span></div>
+</div>
+
+
+<!-- ============================================================
+     徽章 / 状态
+     ============================================================ -->
+<div class="section" id="badges">
+    <h2 class="section-title">
+        <i data-lucide="tag" style="width:22px;height:22px;color:var(--primary-color)"></i>
+        徽章 / 状态
+    </h2>
+
+    <div class="preview-block">
+        <div class="preview-label">Badge 变体</div>
+        <div class="preview-body">
+            <span class="badge badge-success">已完成</span>
+            <span class="badge badge-danger">失败</span>
+            <span class="badge badge-warning">处理中</span>
+            <span class="badge badge-info">待审核</span>
+            <span class="badge badge-secondary">已归档</span>
+        </div>
+    </div>
+
+    <div class="preview-block">
+        <div class="preview-label">状态点（Status Dot）</div>
+        <div class="preview-body">
+            <span><span class="status-dot dot-online"></span><span style="font-size:0.85rem">在线</span></span>
+            <span><span class="status-dot dot-offline"></span><span style="font-size:0.85rem">离线</span></span>
+            <span><span class="status-dot dot-warning"></span><span style="font-size:0.85rem">告警</span></span>
+        </div>
+    </div>
+
+    <div class="code-block"><span class="code-tag">&lt;span</span> <span class="code-attr">class</span>=<span class="code-value">"badge badge-success"</span><span class="code-tag">&gt;</span>已完成<span class="code-tag">&lt;/span&gt;</span>
+<span class="code-tag">&lt;span</span> <span class="code-attr">class</span>=<span class="code-value">"badge badge-danger"</span><span class="code-tag">&gt;</span>失败<span class="code-tag">&lt;/span&gt;</span>
+<span class="code-tag">&lt;span</span> <span class="code-attr">class</span>=<span class="code-value">"badge badge-warning"</span><span class="code-tag">&gt;</span>处理中<span class="code-tag">&lt;/span&gt;</span>
+
+<span class="code-comment">&lt;!-- 状态点 --&gt;</span>
+<span class="code-tag">&lt;span</span> <span class="code-attr">class</span>=<span class="code-value">"status-dot dot-online"</span><span class="code-tag">&gt;&lt;/span&gt;</span>在线</div>
+</div>
+
+
+<!-- ============================================================
+     卡片 / 面板
+     ============================================================ -->
+<div class="section" id="cards">
+    <h2 class="section-title">
+        <i data-lucide="square" style="width:22px;height:22px;color:var(--primary-color)"></i>
+        卡片 / 面板
+    </h2>
+
+    <div class="preview-block">
+        <div class="preview-label">标准卡片</div>
+        <div style="padding:20px">
+            <div class="data-card" style="max-width:420px">
+                <div class="card-header">
+                    <h3>文件列表</h3>
+                    <div style="display:flex;gap:8px">
+                        <button class="btn btn-primary btn-sm"><i data-lucide="plus"></i>新增</button>
+                        <button class="btn btn-outline btn-sm"><i data-lucide="download"></i>导出</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p style="font-size:0.88rem;color:var(--text-secondary)">卡片内容区域，可放置表格、列表、图表等任意内容。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="code-block"><span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-value">"data-card"</span><span class="code-tag">&gt;</span>
+  <span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-value">"card-header"</span><span class="code-tag">&gt;</span>
+    <span class="code-tag">&lt;h3&gt;</span>卡片标题<span class="code-tag">&lt;/h3&gt;</span>
+    <span class="code-tag">&lt;button</span> <span class="code-attr">class</span>=<span class="code-value">"btn btn-primary btn-sm"</span><span class="code-tag">&gt;</span>操作<span class="code-tag">&lt;/button&gt;</span>
+  <span class="code-tag">&lt;/div&gt;</span>
+  <span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-value">"card-body"</span><span class="code-tag">&gt;</span>
+    <span class="code-comment">&lt;!-- 内容 --&gt;</span>
+  <span class="code-tag">&lt;/div&gt;</span>
+<span class="code-tag">&lt;/div&gt;</span></div>
+</div>
+
+
+<!-- ============================================================
+     表格
+     ============================================================ -->
+<div class="section" id="tables">
+    <h2 class="section-title">
+        <i data-lucide="table" style="width:22px;height:22px;color:var(--primary-color)"></i>
+        表格
+    </h2>
+
+    <div class="preview-block">
+        <div class="preview-label">标准表格</div>
+        <div style="padding:0">
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>文件名称</th>
+                            <th>类别</th>
+                            <th>上传时间</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><i data-lucide="file-text" style="width:14px;height:14px;color:var(--primary-color);vertical-align:middle;margin-right:6px"></i>海缆投标技术规范.pdf</td>
+                            <td>技术文档</td>
+                            <td>2024-03-15 14:30</td>
+                            <td><span class="badge badge-success">已完成</span></td>
+                            <td>
+                                <button class="btn-icon" title="编辑"><i data-lucide="edit"></i></button>
+                                <button class="btn-icon" title="删除" style="color:var(--danger-color)"><i data-lucide="trash-2"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><i data-lucide="file" style="width:14px;height:14px;color:var(--accent-color);vertical-align:middle;margin-right:6px"></i>项目报价单.xlsx</td>
+                            <td>商务文件</td>
+                            <td>2024-03-14 09:15</td>
+                            <td><span class="badge badge-warning">处理中</span></td>
+                            <td>
+                                <button class="btn-icon" title="编辑"><i data-lucide="edit"></i></button>
+                                <button class="btn-icon" title="删除" style="color:var(--danger-color)"><i data-lucide="trash-2"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><i data-lucide="image" style="width:14px;height:14px;color:var(--success-color);vertical-align:middle;margin-right:6px"></i>工程图纸-A3.png</td>
+                            <td>图纸</td>
+                            <td>2024-03-13 16:45</td>
+                            <td><span class="badge badge-danger">失败</span></td>
+                            <td>
+                                <button class="btn-icon" title="编辑"><i data-lucide="edit"></i></button>
+                                <button class="btn-icon" title="删除" style="color:var(--danger-color)"><i data-lucide="trash-2"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination">
+                <button class="pagination-btn" disabled><i data-lucide="chevron-left"></i>上一页</button>
+                <span class="pagination-info">第 1 页，共 12 页（112 条）</span>
+                <button class="pagination-btn">下一页<i data-lucide="chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="code-block"><span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-value">"data-card"</span><span class="code-tag">&gt;</span>
+  <span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-value">"card-header"</span><span class="code-tag">&gt;&lt;h3&gt;</span>列表标题<span class="code-tag">&lt;/h3&gt;&lt;/div&gt;</span>
+  <span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-value">"table-wrapper"</span><span class="code-tag">&gt;</span>
+    <span class="code-tag">&lt;table&gt;</span>
+      <span class="code-tag">&lt;thead&gt;&lt;tr&gt;</span>
+        <span class="code-tag">&lt;th&gt;</span>名称<span class="code-tag">&lt;/th&gt;&lt;th&gt;</span>状态<span class="code-tag">&lt;/th&gt;&lt;th&gt;</span>操作<span class="code-tag">&lt;/th&gt;</span>
+      <span class="code-tag">&lt;/tr&gt;&lt;/thead&gt;</span>
+      <span class="code-tag">&lt;tbody&gt;</span>
+        <span class="code-tag">&lt;tr&gt;</span>
+          <span class="code-tag">&lt;td&gt;</span>文件名<span class="code-tag">&lt;/td&gt;</span>
+          <span class="code-tag">&lt;td&gt;&lt;span</span> <span class="code-attr">class</span>=<span class="code-value">"badge badge-success"</span><span class="code-tag">&gt;</span>已完成<span class="code-tag">&lt;/span&gt;&lt;/td&gt;</span>
+          <span class="code-tag">&lt;td&gt;&lt;button</span> <span class="code-attr">class</span>=<span class="code-value">"btn-icon"</span><span class="code-tag">&gt;&lt;i</span> <span class="code-attr">data-lucide</span>=<span class="code-value">"edit"</span><span class="code-tag">&gt;&lt;/i&gt;&lt;/button&gt;&lt;/td&gt;</span>
+        <span class="code-tag">&lt;/tr&gt;</span>
+      <span class="code-tag">&lt;/tbody&gt;</span>
+    <span class="code-tag">&lt;/table&gt;</span>
+  <span class="code-tag">&lt;/div&gt;</span>
+<span class="code-tag">&lt;/div&gt;</span></div>
+</div>
+
+
+<!-- ============================================================
+     表单
+     ============================================================ -->
+<div class="section" id="forms">
+    <h2 class="section-title">
+        <i data-lucide="edit-3" style="width:22px;height:22px;color:var(--primary-color)"></i>
+        表单
+    </h2>
+
+    <div class="preview-block">
+        <div class="preview-label">输入框 / 自定义 Select / 搜索栏</div>
+        <div class="preview-body column" style="max-width:400px">
+            <div class="form-group" style="width:100%">
+                <label>文件名称</label>
+                <input class="form-control" type="text" placeholder="请输入文件名称">
+            </div>
+            <div class="form-group" style="width:100%">
+                <label>文件类别</label>
+                <div class="select-wrapper" id="sw-demo1">
+                    <div class="form-select" onclick="toggleSelectDemo('sw-demo1')">
+                        <span class="select-val">请选择类别</span>
+                    </div>
+                    <div class="select-menu">
+                        <div class="select-option" onclick="pickSelectDemo('sw-demo1', this)">技术文档</div>
+                        <div class="select-option active" onclick="pickSelectDemo('sw-demo1', this)">商务文件</div>
+                        <div class="select-option" onclick="pickSelectDemo('sw-demo1', this)">图纸</div>
+                        <div class="select-option disabled">已归档（禁用）</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" style="width:100%">
+                <label>备注说明</label>
+                <textarea class="form-control" rows="3" placeholder="请输入备注…"></textarea>
+            </div>
+            <div class="search-group" style="width:100%">
+                <input type="text" placeholder="搜索文件…">
+                <button class="btn btn-primary"><i data-lucide="search"></i>搜索</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="code-block"><span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-value">"form-group"</span><span class="code-tag">&gt;</span>
+  <span class="code-tag">&lt;label&gt;</span>字段名称<span class="code-tag">&lt;/label&gt;</span>
+  <span class="code-tag">&lt;input</span> <span class="code-attr">class</span>=<span class="code-value">"form-control"</span> <span class="code-attr">type</span>=<span class="code-value">"text"</span> <span class="code-attr">placeholder</span>=<span class="code-value">"请输入…"</span><span class="code-tag">&gt;</span>
+<span class="code-tag">&lt;/div&gt;</span>
+
+<span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-value">"form-group"</span><span class="code-tag">&gt;</span>
+  <span class="code-tag">&lt;label&gt;</span>下拉选择<span class="code-tag">&lt;/label&gt;</span>
+  <span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-value">"select-wrapper"</span> <span class="code-attr">id</span>=<span class="code-value">"sw-1"</span><span class="code-tag">&gt;</span>
+    <span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-value">"form-select"</span> <span class="code-attr">onclick</span>=<span class="code-value">"toggleSelect('sw-1')"</span><span class="code-tag">&gt;</span>
+      <span class="code-tag">&lt;span</span> <span class="code-attr">class</span>=<span class="code-value">"select-val"</span><span class="code-tag">&gt;</span>请选择<span class="code-tag">&lt;/span&gt;</span>
+    <span class="code-tag">&lt;/div&gt;</span>
+    <span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-value">"select-menu"</span><span class="code-tag">&gt;</span>
+      <span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-value">"select-option active"</span> <span class="code-attr">onclick</span>=<span class="code-value">"pickSelect('sw-1', this)"</span><span class="code-tag">&gt;</span>选项一<span class="code-tag">&lt;/div&gt;</span>
+      <span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-value">"select-option"</span> <span class="code-attr">onclick</span>=<span class="code-value">"pickSelect('sw-1', this)"</span><span class="code-tag">&gt;</span>选项二<span class="code-tag">&lt;/div&gt;</span>
+      <span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-value">"select-option disabled"</span><span class="code-tag">&gt;</span>禁用项<span class="code-tag">&lt;/div&gt;</span>
+    <span class="code-tag">&lt;/div&gt;</span>
+  <span class="code-tag">&lt;/div&gt;</span>
+<span class="code-tag">&lt;/div&gt;</span>
+
+<span class="code-comment">&lt;!-- JS 交互（放在 script 块中）--&gt;</span>
+<span class="code-tag">&lt;script&gt;</span>
+function toggleSelect(id) {
+  const w = document.getElementById(id);
+  document.querySelectorAll('.select-wrapper.open').forEach(o => { if(o.id !== id) o.classList.remove('open'); });
+  w.classList.toggle('open');
+}
+function pickSelect(id, el) {
+  const w = document.getElementById(id);
+  w.querySelector('.select-val').textContent = el.textContent;
+  w.querySelectorAll('.select-option').forEach(o => o.classList.remove('active'));
+  el.classList.add('active');
+  w.classList.remove('open');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.select-wrapper')) document.querySelectorAll('.select-wrapper.open').forEach(w => w.classList.remove('open'));
+});
+<span class="code-tag">&lt;/script&gt;</span>
+
+<span class="code-comment">&lt;!-- 搜索栏 --&gt;</span>
+<span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-value">"search-group"</span><span class="code-tag">&gt;</span>
+  <span class="code-tag">&lt;input</span> <span class="code-attr">type</span>=<span class="code-value">"text"</span> <span class="code-attr">placeholder</span>=<span class="code-value">"搜索…"</span><span class="code-tag">&gt;</span>
+  <span class="code-tag">&lt;button</span> <span class="code-attr">class</span>=<span class="code-value">"btn btn-primary"</span><span class="code-tag">&gt;&lt;i</span> <span class="code-attr">data-lucide</span>=<span class="code-value">"search"</span><span class="code-tag">&gt;&lt;/i&gt;</span>搜索<span class="code-tag">&lt;/button&gt;</span>
+<span class="code-tag">&lt;/div&gt;</span></div>
+</div>
+
+
+<!-- ============================================================
+     弹窗
+     ============================================================ -->
+<div class="section" id="modal">
+    <h2 class="section-title">
+        <i data-lucide="layers" style="width:22px;height:22px;color:var(--primary-color)"></i>
+        弹窗
+    </h2>
+
+    <div class="preview-block">
+        <div class="preview-label">Modal 示例（点击按钮预览）</div>
+        <div class="preview-body">
+            <button class="btn btn-primary" onclick="document.getElementById('demo-modal').style.display='flex';lucide.createIcons()">
+                <i data-lucide="external-link"></i>打开弹窗
+            </button>
+        </div>
+    </div>
+
+    <div class="code-block"><span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-value">"modal-overlay"</span> <span class="code-attr">id</span>=<span class="code-value">"myModal"</span><span class="code-tag">&gt;</span>
+  <span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-value">"modal-card"</span><span class="code-tag">&gt;</span>
+    <span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-value">"modal-header"</span><span class="code-tag">&gt;</span>
+      <span class="code-tag">&lt;h3&gt;</span>弹窗标题<span class="code-tag">&lt;/h3&gt;</span>
+      <span class="code-tag">&lt;button</span> <span class="code-attr">class</span>=<span class="code-value">"btn-icon"</span> <span class="code-attr">onclick</span>=<span class="code-value">"closeModal()"</span><span class="code-tag">&gt;&lt;i</span> <span class="code-attr">data-lucide</span>=<span class="code-value">"x"</span><span class="code-tag">&gt;&lt;/i&gt;&lt;/button&gt;</span>
+    <span class="code-tag">&lt;/div&gt;</span>
+    <span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-value">"modal-body"</span><span class="code-tag">&gt;</span>
+      <span class="code-comment">&lt;!-- 表单或内容 --&gt;</span>
+    <span class="code-tag">&lt;/div&gt;</span>
+    <span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-value">"modal-footer"</span><span class="code-tag">&gt;</span>
+      <span class="code-tag">&lt;button</span> <span class="code-attr">class</span>=<span class="code-value">"btn btn-outline"</span> <span class="code-attr">onclick</span>=<span class="code-value">"closeModal()"</span><span class="code-tag">&gt;</span>取消<span class="code-tag">&lt;/button&gt;</span>
+      <span class="code-tag">&lt;button</span> <span class="code-attr">class</span>=<span class="code-value">"btn btn-primary"</span><span class="code-tag">&gt;</span>确认<span class="code-tag">&lt;/button&gt;</span>
+    <span class="code-tag">&lt;/div&gt;</span>
+  <span class="code-tag">&lt;/div&gt;</span>
+<span class="code-tag">&lt;/div&gt;</span></div>
+</div>
+
+
+<!-- ============================================================
+     分页
+     ============================================================ -->
+<div class="section" id="pagination">
+    <h2 class="section-title">
+        <i data-lucide="chevrons-right" style="width:22px;height:22px;color:var(--primary-color)"></i>
+        分页
+    </h2>
+
+    <div class="preview-block">
+        <div class="preview-label">分页控件</div>
+        <div class="preview-body" style="padding:0">
+            <div class="pagination" style="width:100%">
+                <button class="pagination-btn" disabled><i data-lucide="chevron-left"></i>上一页</button>
+                <span class="pagination-info">第 3 页，共 20 页（196 条）</span>
+                <button class="pagination-btn">下一页<i data-lucide="chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ============================================================
+     开关
+     ============================================================ -->
+<div class="section" id="toggle">
+    <h2 class="section-title">
+        <i data-lucide="toggle-right" style="width:22px;height:22px;color:var(--primary-color)"></i>
+        开关
+    </h2>
+
+    <div class="preview-block">
+        <div class="preview-label">Toggle Switch</div>
+        <div class="preview-body">
+            <div style="display:flex;align-items:center;gap:10px">
+                <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                <span style="font-size:0.88rem">已启用</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px">
+                <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+                <span style="font-size:0.88rem;color:var(--text-muted)">已禁用</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="code-block"><span class="code-tag">&lt;label</span> <span class="code-attr">class</span>=<span class="code-value">"switch"</span><span class="code-tag">&gt;</span>
+  <span class="code-tag">&lt;input</span> <span class="code-attr">type</span>=<span class="code-value">"checkbox"</span> <span class="code-attr">checked</span><span class="code-tag">&gt;</span>
+  <span class="code-tag">&lt;span</span> <span class="code-attr">class</span>=<span class="code-value">"slider"</span><span class="code-tag">&gt;&lt;/span&gt;</span>
+<span class="code-tag">&lt;/label&gt;</span></div>
+</div>
+
+
+<!-- ============================================================
+     上传区
+     ============================================================ -->
+<div class="section" id="upload">
+    <h2 class="section-title">
+        <i data-lucide="upload-cloud" style="width:22px;height:22px;color:var(--primary-color)"></i>
+        上传区
+    </h2>
+
+    <div class="preview-block">
+        <div class="preview-label">文件拖拽上传</div>
+        <div style="padding:20px">
+            <div class="upload-dropzone">
+                <div class="upload-dropzone-icon">
+                    <i data-lucide="upload-cloud"></i>
+                </div>
+                <div>
+                    <div class="upload-dropzone-text-main">点击或拖拽文件到此区域上传</div>
+                    <div class="upload-dropzone-text-sub">支持 PDF、Word、Excel，单文件不超过 50MB</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="code-block"><span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-value">"upload-dropzone"</span><span class="code-tag">&gt;</span>
+  <span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-value">"upload-dropzone-icon"</span><span class="code-tag">&gt;&lt;i</span> <span class="code-attr">data-lucide</span>=<span class="code-value">"upload-cloud"</span><span class="code-tag">&gt;&lt;/i&gt;&lt;/div&gt;</span>
+  <span class="code-tag">&lt;div&gt;</span>
+    <span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-value">"upload-dropzone-text-main"</span><span class="code-tag">&gt;</span>点击或拖拽文件到此区域<span class="code-tag">&lt;/div&gt;</span>
+    <span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-value">"upload-dropzone-text-sub"</span><span class="code-tag">&gt;</span>支持 PDF、Word、Excel<span class="code-tag">&lt;/div&gt;</span>
+  <span class="code-tag">&lt;/div&gt;</span>
+<span class="code-tag">&lt;/div&gt;</span></div>
+</div>
+
+
+<!-- ============================================================
+     告警 Toast
+     ============================================================ -->
+<div class="section" id="toast">
+    <h2 class="section-title">
+        <i data-lucide="bell" style="width:22px;height:22px;color:var(--primary-color)"></i>
+        告警 Toast
+    </h2>
+
+    <div class="preview-block">
+        <div class="preview-label">右下角告警通知（点击按钮触发）</div>
+        <div class="preview-body">
+            <button class="btn btn-danger" onclick="showToast()">
+                <i data-lucide="bell"></i>触发告警
+            </button>
+        </div>
+    </div>
+
+    <div class="code-block"><span class="code-comment">&lt;!-- 容器（放在 body 末尾）--&gt;</span>
+<span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-value">"alarm-toast-container"</span> <span class="code-attr">id</span>=<span class="code-value">"toastContainer"</span><span class="code-tag">&gt;&lt;/div&gt;</span>
+
+<span class="code-comment">&lt;!-- JS 创建 Toast --&gt;</span>
+<span class="code-tag">&lt;script&gt;</span>
+function showAlarm(title, msg) {
+  const t = document.createElement('div');
+  t.className = 'alarm-toast';
+  t.innerHTML = `&lt;h4&gt;&lt;i data-lucide="alert-triangle"&gt;&lt;/i&gt;${title}&lt;/h4&gt;
+                 &lt;p&gt;${msg}&lt;/p&gt;`;
+  document.getElementById('toastContainer').appendChild(t);
+  lucide.createIcons();
+  setTimeout(() => t.remove(), 5000);
+}
+<span class="code-tag">&lt;/script&gt;</span></div>
+</div>
+
+
+
+
+<!-- ============================================================
+     数据可视化
+     ============================================================ -->
+<div class="section" id="charts">
+    <h2 class="section-title">
+        <i data-lucide="bar-chart-2" style="width:22px;height:22px;color:var(--primary-color)"></i>
+        数据可视化
+        <span>ECharts + 指标卡片</span>
+    </h2>
+
+    <!-- 指标卡片 -->
+    <h3 class="subsection-title">指标卡片 — 数据监控</h3>
+    <div class="preview-block">
+        <div class="preview-label">统计数字卡片（metric-grid）</div>
+        <div style="padding:20px">
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div>
+                        <div class="metric-label">本月投标文件</div>
+                        <div class="metric-value">128</div>
+                        <div class="metric-trend up">↑ 12% 较上月</div>
+                    </div>
+                    <div class="metric-icon blue"><i data-lucide="file-text"></i></div>
+                </div>
+                <div class="metric-card">
+                    <div>
+                        <div class="metric-label">审批通过率</div>
+                        <div class="metric-value">94.3%</div>
+                        <div class="metric-trend up">↑ 2.1% 较上月</div>
+                    </div>
+                    <div class="metric-icon green"><i data-lucide="check-circle"></i></div>
+                </div>
+                <div class="metric-card">
+                    <div>
+                        <div class="metric-label">平均处理时长</div>
+                        <div class="metric-value">3.2h</div>
+                        <div class="metric-trend down">↓ 0.8h 较上月</div>
+                    </div>
+                    <div class="metric-icon orange"><i data-lucide="clock"></i></div>
+                </div>
+                <div class="metric-card">
+                    <div>
+                        <div class="metric-label">今日告警</div>
+                        <div class="metric-value">7</div>
+                        <div class="metric-trend neutral">与昨日持平</div>
+                    </div>
+                    <div class="metric-icon red"><i data-lucide="alert-triangle"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 折线图 -->
+    <h3 class="subsection-title">折线图 — 趋势监控</h3>
+    <div class="preview-block">
+        <div class="preview-label">实时数据折线图（ECharts）</div>
+        <div style="padding:16px 20px">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3>设备在线率趋势</h3>
+                    <div class="chart-tabs">
+                        <div class="chart-tab active" onclick="switchChartTab(this,'line-week')">近7天</div>
+                        <div class="chart-tab" onclick="switchChartTab(this,'line-month')">近30天</div>
+                        <div class="chart-tab" onclick="switchChartTab(this,'line-year')">全年</div>
+                    </div>
+                </div>
+                <div class="chart-body">
+                    <div class="chart-container" id="chart-line" style="height:220px"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 柱状图 -->
+    <h3 class="subsection-title">柱状图 — 分类对比</h3>
+    <div class="preview-block">
+        <div class="preview-label">分类数据柱状图（ECharts）</div>
+        <div style="padding:16px 20px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>各类型文件数量</h3>
+                    </div>
+                    <div class="chart-body">
+                        <div class="chart-container" id="chart-bar" style="height:200px"></div>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>缺陷类型分布</h3>
+                    </div>
+                    <div class="chart-body">
+                        <div class="chart-container" id="chart-pie" style="height:200px"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 仪表盘 -->
+    <h3 class="subsection-title">仪表盘 — 实时指标</h3>
+    <div class="preview-block">
+        <div class="preview-label">仪表盘 Gauge（ECharts）</div>
+        <div style="padding:16px 20px">
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+                <div class="chart-card">
+                    <div class="chart-header"><h3>CPU 使用率</h3></div>
+                    <div class="chart-body">
+                        <div class="chart-container" id="chart-gauge1" style="height:160px"></div>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header"><h3>识别准确率</h3></div>
+                    <div class="chart-body">
+                        <div class="chart-container" id="chart-gauge2" style="height:160px"></div>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header"><h3>设备在线率</h3></div>
+                    <div class="chart-body">
+                        <div class="chart-container" id="chart-gauge3" style="height:160px"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="code-block"><span class="code-comment">&lt;!-- 引入 ECharts（放在 &lt;/body&gt; 前，与 lucide 同位置）--&gt;</span>
+<span class="code-tag">&lt;script</span> <span class="code-attr">src</span>=<span class="code-value">"https://cdn.bootcdn.net/ajax/libs/echarts/5.4.3/echarts.min.js"</span><span class="code-tag">&gt;&lt;/script&gt;</span>
+
+<span class="code-comment">&lt;!-- HTML 容器 --&gt;</span>
+<span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-value">"chart-card"</span><span class="code-tag">&gt;</span>
+  <span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-value">"chart-header"</span><span class="code-tag">&gt;&lt;h3&gt;</span>图表标题<span class="code-tag">&lt;/h3&gt;&lt;/div&gt;</span>
+  <span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-value">"chart-body"</span><span class="code-tag">&gt;</span>
+    <span class="code-tag">&lt;div</span> <span class="code-attr">id</span>=<span class="code-value">"myChart"</span> <span class="code-attr">style</span>=<span class="code-value">"height:220px"</span><span class="code-tag">&gt;&lt;/div&gt;</span>
+  <span class="code-tag">&lt;/div&gt;</span>
+<span class="code-tag">&lt;/div&gt;</span>
+
+<span class="code-comment">&lt;!-- JS 初始化（折线图示例）--&gt;</span>
+<span class="code-tag">&lt;script&gt;</span>
+const chart = echarts.init(document.getElementById('myChart'));
+chart.setOption({
+  grid: { top:20, right:16, bottom:28, left:40 },
+  xAxis: { type:'category', data:['周一','周二','周三','周四','周五','周六','周日'],
+           axisLine:{ lineStyle:{ color:'#E2E8F0' } },
+           axisTick:{ show:false }, axisLabel:{ color:'#94A3B8', fontSize:11 } },
+  yAxis: { type:'value', splitLine:{ lineStyle:{ color:'#F1F5F9' } },
+           axisLabel:{ color:'#94A3B8', fontSize:11 } },
+  series:[{ type:'line', data:[96,94,97,95,98,97,96],
+            smooth:true, symbol:'circle', symbolSize:5,
+            lineStyle:{ color:'#004EA1', width:2 },
+            itemStyle:{ color:'#004EA1' },
+            areaStyle:{ color:{ type:'linear', x:0,y:0,x2:0,y2:1,
+              colorStops:[{ offset:0, color:'rgba(0,78,161,0.18)' },
+                          { offset:1, color:'rgba(0,78,161,0)' }] } } }]
+});
+<span class="code-tag">&lt;/script&gt;</span></div>
+</div>
+
+
+<!-- ============================================================
+     触控屏布局
+     ============================================================ -->
+
+</div><!-- /.guide-content -->
+
+
+<!-- 演示弹窗 -->
+<div class="modal-overlay" id="demo-modal" style="display:none" onclick="if(event.target===this)this.style.display='none'">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>新增文件</h3>
+            <button class="btn-icon" onclick="document.getElementById('demo-modal').style.display='none'">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label>文件名称</label>
+                <input class="form-control" type="text" placeholder="请输入文件名称">
+            </div>
+            <div class="form-group">
+                <label>文件类别</label>
+                <div class="select-wrapper" id="sw-modal">
+                    <div class="form-select" onclick="toggleSelectDemo('sw-modal')">
+                        <span class="select-val">请选择类别</span>
+                    </div>
+                    <div class="select-menu">
+                        <div class="select-option" onclick="pickSelectDemo('sw-modal', this)">技术文档</div>
+                        <div class="select-option" onclick="pickSelectDemo('sw-modal', this)">商务文件</div>
+                    </div>
+                </div>
+            </div>
+            <div class="upload-dropzone" style="margin-top:8px">
+                <div class="upload-dropzone-icon"><i data-lucide="upload-cloud"></i></div>
+                <div>
+                    <div class="upload-dropzone-text-main">点击或拖拽上传文件</div>
+                    <div class="upload-dropzone-text-sub">支持 PDF、Word、Excel</div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="document.getElementById('demo-modal').style.display='none'">取消</button>
+            <button class="btn btn-primary"><i data-lucide="check"></i>确认上传</button>
+        </div>
+    </div>
+</div>
+
+<!-- 告警 Toast 容器 -->
+<div class="alarm-toast-container" id="toastContainer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+<script>
+lucide.createIcons();
+
+/* ---- ECharts 公共主题配置 ---- */
+const C = {
+    primary: '#004EA1', accent: '#FF8D1C', success: '#10B981',
+    danger: '#EF4444', muted: '#94A3B8', grid: '#F1F5F9', label: '#64748B'
+};
+
+/* 折线图 */
+(function() {
+    const el = document.getElementById('chart-line');
+    if (!el) return;
+    const chart = echarts.init(el);
+    chart.setOption({
+        grid: { top:24, right:16, bottom:28, left:40 },
+        tooltip: { trigger:'axis', backgroundColor:'#fff', borderColor:'#E2E8F0',
+                   textStyle:{ color:'#1E293B', fontSize:12 } },
+        xAxis: { type:'category',
+                 data:['周一','周二','周三','周四','周五','周六','周日'],
+                 axisLine:{ lineStyle:{ color:C.grid } }, axisTick:{ show:false },
+                 axisLabel:{ color:C.label, fontSize:11 } },
+        yAxis: { type:'value', min:88, max:100,
+                 splitLine:{ lineStyle:{ color:C.grid } },
+                 axisLabel:{ color:C.label, fontSize:11, formatter:'{value}%' } },
+        series:[{
+            type:'line', data:[96,94,97,95,98,97,96.5],
+            smooth:true, symbol:'circle', symbolSize:6,
+            lineStyle:{ color:C.primary, width:2.5 },
+            itemStyle:{ color:C.primary },
+            areaStyle:{ color:{ type:'linear',x:0,y:0,x2:0,y2:1,
+                colorStops:[{offset:0,color:'rgba(0,78,161,0.18)'},{offset:1,color:'rgba(0,78,161,0)'}] } }
+        }]
+    });
+})();
+
+/* 柱状图 */
+(function() {
+    const el = document.getElementById('chart-bar');
+    if (!el) return;
+    const chart = echarts.init(el);
+    chart.setOption({
+        grid: { top:16, right:16, bottom:32, left:40 },
+        tooltip: { trigger:'axis', backgroundColor:'#fff', borderColor:'#E2E8F0',
+                   textStyle:{ color:'#1E293B', fontSize:12 } },
+        xAxis: { type:'category', data:['技术文档','商务文件','图纸','合同','报告'],
+                 axisLine:{ lineStyle:{ color:C.grid } }, axisTick:{ show:false },
+                 axisLabel:{ color:C.label, fontSize:10, interval:0 } },
+        yAxis: { type:'value', splitLine:{ lineStyle:{ color:C.grid } },
+                 axisLabel:{ color:C.label, fontSize:11 } },
+        series:[{
+            type:'bar', data:[42,36,28,19,15], barMaxWidth:32, borderRadius:[4,4,0,0],
+            itemStyle:{ color:{ type:'linear',x:0,y:0,x2:0,y2:1,
+                colorStops:[{offset:0,color:C.primary},{offset:1,color:'rgba(0,78,161,0.4)'}] } }
+        }]
+    });
+})();
+
+/* 饼图 */
+(function() {
+    const el = document.getElementById('chart-pie');
+    if (!el) return;
+    const chart = echarts.init(el);
+    chart.setOption({
+        tooltip: { trigger:'item', backgroundColor:'#fff', borderColor:'#E2E8F0',
+                   textStyle:{ color:'#1E293B', fontSize:12 },
+                   formatter:'{b}: {c} ({d}%)' },
+        legend: { bottom:0, textStyle:{ color:C.label, fontSize:11 } },
+        series:[{
+            type:'pie', radius:['40%','68%'], center:['50%','42%'],
+            data:[
+                { value:38, name:'表面划伤', itemStyle:{ color:C.primary } },
+                { value:27, name:'裂纹', itemStyle:{ color:C.accent } },
+                { value:19, name:'气泡', itemStyle:{ color:C.success } },
+                { value:16, name:'其他', itemStyle:{ color:C.muted } }
+            ],
+            label:{ show:false },
+            itemStyle:{ borderWidth:2, borderColor:'#fff' }
+        }]
+    });
+})();
+
+/* 仪表盘 — 工具函数 */
+function makeGauge(id, value, color, name) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    echarts.init(el).setOption({
+        series:[{
+            type:'gauge', startAngle:200, endAngle:-20,
+            min:0, max:100, splitNumber:5,
+            radius:'88%', center:['50%','58%'],
+            axisLine:{ lineStyle:{ width:12,
+                color:[[value/100, color],[1,'#F1F5F9']] } },
+            axisTick:{ show:false }, splitLine:{ show:false },
+            axisLabel:{ show:false },
+            pointer:{ show:false },
+            detail:{ valueAnimation:true, fontSize:20, fontWeight:700,
+                     color:color, offsetCenter:[0,'-8%'],
+                     formatter:'{value}%' },
+            title:{ show:true, offsetCenter:[0,'22%'], fontSize:11, color:C.label },
+            data:[{ value, name }]
+        }]
+    });
+}
+makeGauge('chart-gauge1', 63, C.accent, 'CPU');
+makeGauge('chart-gauge2', 98, C.success, '准确率');
+makeGauge('chart-gauge3', 96, C.primary, '在线率');
+
+/* 图表 Tab 切换 */
+function switchChartTab(el, key) {
+    el.closest('.chart-tabs').querySelectorAll('.chart-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+}
+
+
+/* 二级菜单 toggle */
+function toggleDemoSubmenu(id, el) {
+    const sub = document.getElementById(id);
+    const isOpen = sub.classList.contains('open');
+    // 关闭同级其他展开的子菜单
+    document.querySelectorAll('.demo-submenu.open').forEach(s => {
+        s.classList.remove('open');
+        const parent = s.previousElementSibling;
+        if (parent) parent.classList.remove('open');
+    });
+    if (!isOpen) {
+        sub.classList.add('open');
+        el.classList.add('open');
+    }
+}
+
+/* 自定义 Select */
+function toggleSelectDemo(id) {
+    const w = document.getElementById(id);
+    document.querySelectorAll('.select-wrapper.open').forEach(o => { if (o.id !== id) o.classList.remove('open'); });
+    w.classList.toggle('open');
+}
+function pickSelectDemo(id, el) {
+    const w = document.getElementById(id);
+    w.querySelector('.select-val').textContent = el.textContent.trim();
+    w.querySelectorAll('.select-option').forEach(o => o.classList.remove('active'));
+    el.classList.add('active');
+    w.classList.remove('open');
+}
+document.addEventListener('click', e => {
+    if (!e.target.closest('.select-wrapper')) {
+        document.querySelectorAll('.select-wrapper.open').forEach(w => w.classList.remove('open'));
+    }
+});
+
+function showToast() {
+    const container = document.getElementById('toastContainer');
+    const t = document.createElement('div');
+    t.className = 'alarm-toast';
+    t.innerHTML = `<h4><i data-lucide="alert-triangle"></i>设备连接异常</h4><p>摄像头 CAM-03 离线，请检查网络连接。</p>`;
+    container.appendChild(t);
+    lucide.createIcons();
+    setTimeout(() => {
+        t.style.transition = 'opacity 0.3s';
+        t.style.opacity = '0';
+        setTimeout(() => t.remove(), 300);
+    }, 4000);
+}
+</script>
+
+<!-- ============================================================
+     快速开始 - 新建系统骨架模板
+     ============================================================ -->
+<div class="section" id="template">
+    <h2 class="section-title">
+        <i data-lucide="copy" style="width:22px;height:22px;color:var(--primary-color)"></i>
+        新建系统骨架模板
+        <span>复制以下代码作为新系统的起点</span>
+    </h2>
+
+    <p style="font-size:0.88rem;color:var(--text-secondary);margin-bottom:16px;">
+        每个新 B 端系统都从此骨架开始，<strong>替换标题、补充导航项、填充 main 内容</strong>即可。
+    </p>
+
+    <div class="template-box"><span style="color:#64748B"><!-- ① 复制全部内容到新 .html 文件
+     ② 修改 &lt;title&gt; 和 .logo-box h1 为系统名称
+     ③ 在 .nav-group 中添加 .nav-item 导航项
+     ④ 在 &lt;main&gt; 中编写页面内容 --></span>
+
+<span style="color:#93C5FD">&lt;!DOCTYPE html&gt;</span>
+<span style="color:#93C5FD">&lt;html</span> <span style="color:#FCA5A5">lang</span>=<span style="color:#86EFAC">"zh-CN"</span><span style="color:#93C5FD">&gt;</span>
+<span style="color:#93C5FD">&lt;head&gt;</span>
+  <span style="color:#93C5FD">&lt;meta</span> <span style="color:#FCA5A5">charset</span>=<span style="color:#86EFAC">"UTF-8"</span><span style="color:#93C5FD">&gt;</span>
+  <span style="color:#93C5FD">&lt;meta</span> <span style="color:#FCA5A5">name</span>=<span style="color:#86EFAC">"viewport"</span> <span style="color:#FCA5A5">content</span>=<span style="color:#86EFAC">"width=device-width, initial-scale=1.0"</span><span style="color:#93C5FD">&gt;</span>
+  <span style="color:#93C5FD">&lt;title&gt;</span>系统名称<span style="color:#93C5FD">&lt;/title&gt;</span>
+  <span style="color:#93C5FD">&lt;script</span> <span style="color:#FCA5A5">src</span>=<span style="color:#86EFAC">"https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.js"</span><span style="color:#93C5FD">&gt;&lt;/script&gt;</span>
+  <span style="color:#93C5FD">&lt;style&gt;</span>
+    <span style="color:#64748B">/* === Design Tokens — 与规范文件保持一致，勿随意修改 === */</span>
+    :root {
+      --primary-color: #004EA1;   <span style="color:#64748B">/* 主蓝 */</span>
+      --accent-color:  #FF8D1C;   <span style="color:#64748B">/* 辅橙 */</span>
+      --danger-color:  #EF4444;   <span style="color:#64748B">/* 危险红 */</span>
+      --success-color: #10B981;   <span style="color:#64748B">/* 成功绿 */</span>
+      --bg-light:      #F8FAFC;   <span style="color:#64748B">/* 页面背景 */</span>
+      --border-color:  #E2E8F0;   <span style="color:#64748B">/* 边框 */</span>
+      --text-dark:     #1E293B;   <span style="color:#64748B">/* 主文字 */</span>
+      --text-secondary:#64748B;   <span style="color:#64748B">/* 次要文字 */</span>
+      --text-muted:    #94A3B8;   <span style="color:#64748B">/* 占位/禁用 */</span>
+      --sidebar-width: 200px;
+      --header-height: 60px;
+      --icon-size-nav:    18px;
+      --icon-size-action: 14px;
+    }
+
+    <span style="color:#64748B">/* === Reset & Base === */</span>
+    * { margin:0; padding:0; box-sizing:border-box;
+        font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; }
+    body { background:var(--bg-light); display:flex; flex-direction:column;
+           height:100vh; overflow:hidden; color:var(--text-dark); }
+
+    <span style="color:#64748B">/* === Header === */</span>
+    header { height:var(--header-height); background:#FFF;
+             box-shadow:0 2px 10px rgba(0,0,0,0.05);
+             display:flex; align-items:center; justify-content:space-between;
+             padding:0 24px 0 20px; z-index:101; }
+    .logo-box { display:flex; align-items:center; gap:10px; }
+    .logo-box img { height:24px; width:auto; }
+    .logo-box h1 { color:var(--primary-color); font-size:1.05rem;
+                   letter-spacing:0.5px; font-weight:800; }
+
+    <span style="color:#64748B">/* === Layout === */</span>
+    .layout-body { display:flex; flex:1; overflow:hidden; }
+    aside { width:var(--sidebar-width); background:#FFF;
+            border-right:1px solid var(--border-color);
+            box-shadow:4px 0 10px rgba(0,0,0,0.03);
+            display:flex; flex-direction:column; z-index:100; }
+    .nav-group { flex:1; padding:20px 0; overflow-y:auto; }
+    main { flex:1; overflow-y:auto; padding:20px; display:flex; flex-direction:column; }
+
+    <span style="color:#64748B">/* === Nav Items === */</span>
+    .nav-item { padding:14px 24px; display:flex; align-items:center;
+                color:#64748B; cursor:pointer; transition:0.3s;
+                border-right:4px solid transparent; font-size:0.9rem; }
+    .nav-item:hover { background:rgba(0,78,161,0.05); color:var(--primary-color); }
+    .nav-item.active { background:linear-gradient(to right,rgba(0,78,161,0.08),rgba(0,78,161,0.01));
+                       color:var(--primary-color); border-right-color:var(--primary-color); font-weight:600; }
+    .nav-item .lucide { margin-right:10px; width:var(--icon-size-nav); height:var(--icon-size-nav); }
+
+    <span style="color:#64748B">/* === Submenu === */</span>
+    .nav-item.has-submenu::after {
+      content:""; width:12px; height:12px; margin-left:auto; transition:transform 0.3s;
+      background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748B' d='M3 4.5l3 3 3-3z'/%3E%3C/svg%3E") no-repeat center; }
+    .nav-item.has-submenu.open::after { transform:rotate(180deg); }
+    .nav-submenu { display:none; max-height:0; overflow:hidden; transition:max-height 0.3s ease-out; }
+    .nav-submenu.open { display:block; max-height:500px; }
+    .nav-submenu-item { padding:10px 24px 10px 48px; font-size:0.85rem;
+                        color:#64748B; cursor:pointer; transition:0.2s; display:flex; align-items:center; }
+    .nav-submenu-item:hover { background:#F8FAFC; color:var(--primary-color); }
+    .nav-submenu-item.active { color:var(--primary-color); font-weight:600; background:#F1F5F9; }
+
+    <span style="color:#64748B">/* === Buttons === */</span>
+    .btn { padding:8px 18px; border-radius:4px; border:none; cursor:pointer;
+           display:inline-flex; align-items:center; gap:6px;
+           font-size:0.85rem; transition:0.2s; font-weight:500; }
+    .btn .lucide { width:var(--icon-size-action); height:var(--icon-size-action); }
+    .btn-primary { background:var(--primary-color); color:#fff; }
+    .btn-primary:hover { background:#003d7f; }
+    .btn-accent  { background:var(--accent-color); color:#fff; }
+    .btn-accent:hover { background:#e67d0f; }
+    .btn-outline { background:#fff; border:1px solid var(--border-color); color:#64748B; }
+    .btn-outline:hover { background:#F8FAFC; border-color:var(--primary-color); color:var(--primary-color); }
+    .btn-sm { padding:6px 12px; font-size:0.8rem; }
+    .btn-icon { padding:6px; border-radius:4px; background:transparent; border:none;
+                cursor:pointer; display:inline-flex; align-items:center; color:#64748B; transition:0.2s; }
+    .btn-icon:hover { background:#F1F5F9; color:var(--primary-color); }
+    .btn-icon .lucide { width:16px; height:16px; }
+
+    <span style="color:#64748B">/* === Badges === */</span>
+    .badge { display:inline-block; padding:3px 10px; border-radius:10px; font-size:0.75rem; font-weight:600; }
+    .badge-success { background:#DCFCE7; color:#15803D; }
+    .badge-danger  { background:#FEE2E2; color:#DC2626; }
+    .badge-warning { background:#FEF3C7; color:#B45309; }
+    .badge-info    { background:#DBEAFE; color:#1D4ED8; }
+
+    <span style="color:#64748B">/* === Status Dot === */</span>
+    .status-dot { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:5px; }
+    .dot-online  { background:var(--success-color); box-shadow:0 0 6px var(--success-color); }
+    .dot-offline { background:var(--danger-color); }
+
+    <span style="color:#64748B">/* === Cards === */</span>
+    .data-card { background:#fff; border-radius:8px; border:1px solid var(--border-color);
+                 box-shadow:0 2px 10px rgba(0,0,0,0.05); }
+    .card-header { padding:14px 20px; border-bottom:1px solid var(--border-color);
+                   display:flex; justify-content:space-between; align-items:center; }
+    .card-header h3 { font-size:0.95rem; color:var(--primary-color); font-weight:700; }
+    .card-body { padding:20px; }
+
+    <span style="color:#64748B">/* === Table === */</span>
+    .table-wrapper { overflow-x:auto; padding:0 20px; }
+    table { width:100%; border-collapse:collapse; }
+    th { background:#F5F8FF; text-align:left; padding:11px 16px; font-weight:600;
+         color:var(--primary-color); border-bottom:2px solid var(--border-color); font-size:0.82rem; }
+    td { padding:11px 16px; border-bottom:1px solid var(--border-color);
+         font-size:0.88rem; color:#334155; vertical-align:middle; }
+    tr:hover td { background:#F9FAFB; }
+
+    <span style="color:#64748B">/* === Forms === */</span>
+    .form-group { margin-bottom:16px; }
+    .form-group label { display:block; font-size:0.85rem; color:#475569; margin-bottom:6px; font-weight:600; }
+    .form-control { width:100%; padding:8px 12px; border:1px solid var(--border-color);
+                    border-radius:4px; outline:none; font-size:0.88rem; color:var(--text-dark);
+                    background:#fff; transition:0.2s; }
+    .form-control:focus { border-color:var(--primary-color); box-shadow:0 0 0 3px rgba(0,78,161,0.1); }
+
+    <span style="color:#64748B">/* === Custom Select === */</span>
+    .select-wrapper { position:relative; }
+    .form-select { width:100%; padding:8px 32px 8px 12px; border:1px solid var(--border-color);
+                   border-radius:4px; font-size:0.86rem; background:#fff; color:var(--text-dark);
+                   cursor:pointer; display:flex; align-items:center; user-select:none; transition:0.2s;
+                   background-image:url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 2l4 4 4-4' stroke='%2394A3B8' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");
+                   background-repeat:no-repeat; background-position:right 12px center; }
+    .select-wrapper.open .form-select { border-color:var(--primary-color); box-shadow:0 0 0 3px rgba(0,78,161,0.1); }
+    .select-menu { position:absolute; top:calc(100% + 4px); left:0; right:0;
+                   background:#fff; border:1px solid #CBD5E1; border-radius:6px;
+                   box-shadow:0 12px 30px rgba(15,23,42,0.12); z-index:200;
+                   max-height:220px; overflow-y:auto; padding:4px 0; display:none; }
+    .select-wrapper.open .select-menu { display:block; }
+    .select-option { padding:8px 14px; font-size:0.86rem; color:#0F172A; cursor:pointer; transition:background 0.15s; }
+    .select-option:hover { background:#EFF6FF; color:var(--primary-color); }
+    .select-option.active { background:#DBEAFE; color:var(--primary-color); font-weight:600; border-left:3px solid var(--primary-color); }
+    .select-option.disabled { cursor:not-allowed; opacity:0.5; pointer-events:none; }
+
+    <span style="color:#64748B">/* === Modal === */</span>
+    .modal-overlay { position:fixed; top:0; left:0; width:100%; height:100%;
+                     background:rgba(0,0,0,0.4); display:none; justify-content:center;
+                     align-items:center; z-index:1000; }
+    .modal-overlay.show { display:flex; }
+    .modal-card { background:#fff; width:480px; border-radius:8px;
+                  box-shadow:0 20px 50px rgba(0,0,0,0.15); overflow:hidden;
+                  animation:modalIn 0.2s ease-out; }
+    @keyframes modalIn { from{transform:scale(0.98);opacity:0} to{transform:scale(1);opacity:1} }
+    .modal-header { padding:16px 20px; background:#F8FAFC;
+                    border-bottom:1px solid var(--border-color);
+                    display:flex; justify-content:space-between; align-items:center; }
+    .modal-header h3 { font-size:0.95rem; color:var(--primary-color); font-weight:700; }
+    .modal-body { padding:24px 20px; }
+    .modal-footer { padding:12px 20px; border-top:1px solid var(--border-color);
+                    display:flex; justify-content:flex-end; gap:10px; background:#F8FAFC; }
+
+    <span style="color:#64748B">/* === Pagination === */</span>
+    .pagination { display:flex; justify-content:center; align-items:center; gap:16px;
+                  padding:14px 20px; border-top:1px solid var(--border-color); background:#F8FAFC; }
+    .pagination-btn { padding:7px 14px; border-radius:4px; border:1px solid var(--border-color);
+                      background:#fff; cursor:pointer; display:inline-flex; align-items:center;
+                      gap:5px; font-size:0.85rem; transition:0.2s; color:var(--text-dark); }
+    .pagination-btn:hover:not(:disabled) { border-color:var(--primary-color); color:var(--primary-color); }
+    .pagination-btn:disabled { opacity:0.45; cursor:not-allowed; }
+    .pagination-info { font-size:0.85rem; color:#64748B; }
+
+    <span style="color:#64748B">/* === Toggle === */</span>
+    .switch { position:relative; display:inline-block; width:36px; height:20px; }
+    .switch input { opacity:0; width:0; height:0; }
+    .slider { position:absolute; cursor:pointer; inset:0; background:#CBD5E1;
+              transition:0.3s; border-radius:20px; }
+    .slider:before { position:absolute; content:""; height:14px; width:14px;
+                     left:3px; bottom:3px; background:#fff; transition:0.3s; border-radius:50%; }
+    input:checked + .slider { background:var(--success-color); }
+    input:checked + .slider:before { transform:translateX(16px); }
+
+    <span style="color:#64748B">/* === 在此追加当前系统专属样式 === */</span>
+
+  <span style="color:#93C5FD">&lt;/style&gt;</span>
+<span style="color:#93C5FD">&lt;/head&gt;</span>
+<span style="color:#93C5FD">&lt;body&gt;</span>
+
+  <span style="color:#64748B">&lt;!-- 顶部导航栏 --&gt;</span>
+  <span style="color:#93C5FD">&lt;header&gt;</span>
+    <span style="color:#93C5FD">&lt;div</span> <span style="color:#FCA5A5">class</span>=<span style="color:#86EFAC">"logo-box"</span><span style="color:#93C5FD">&gt;</span>
+      <span style="color:#64748B">&lt;!-- &lt;img src="logo.png" alt="logo"&gt; --&gt;</span>
+      <span style="color:#93C5FD">&lt;h1&gt;</span>系统名称<span style="color:#93C5FD">&lt;/h1&gt;</span>
+    <span style="color:#93C5FD">&lt;/div&gt;</span>
+    <span style="color:#93C5FD">&lt;div</span> <span style="color:#FCA5A5">class</span>=<span style="color:#86EFAC">"header-right"</span><span style="color:#93C5FD">&gt;</span>
+      <span style="color:#64748B">&lt;!-- 右侧按钮/状态 --&gt;</span>
+    <span style="color:#93C5FD">&lt;/div&gt;</span>
+  <span style="color:#93C5FD">&lt;/header&gt;</span>
+
+  <span style="color:#93C5FD">&lt;div</span> <span style="color:#FCA5A5">class</span>=<span style="color:#86EFAC">"layout-body"</span><span style="color:#93C5FD">&gt;</span>
+
+    <span style="color:#64748B">&lt;!-- 侧边栏 --&gt;</span>
+    <span style="color:#93C5FD">&lt;aside&gt;</span>
+      <span style="color:#93C5FD">&lt;div</span> <span style="color:#FCA5A5">class</span>=<span style="color:#86EFAC">"nav-group"</span><span style="color:#93C5FD">&gt;</span>
+        <span style="color:#93C5FD">&lt;div</span> <span style="color:#FCA5A5">class</span>=<span style="color:#86EFAC">"nav-item active"</span> <span style="color:#FCA5A5">onclick</span>=<span style="color:#86EFAC">"showPage('page1', this)"</span><span style="color:#93C5FD">&gt;</span>
+          <span style="color:#93C5FD">&lt;i</span> <span style="color:#FCA5A5">data-lucide</span>=<span style="color:#86EFAC">"layout-dashboard"</span><span style="color:#93C5FD">&gt;&lt;/i&gt;</span> 功能一
+        <span style="color:#93C5FD">&lt;/div&gt;</span>
+        <span style="color:#93C5FD">&lt;div</span> <span style="color:#FCA5A5">class</span>=<span style="color:#86EFAC">"nav-item"</span> <span style="color:#FCA5A5">onclick</span>=<span style="color:#86EFAC">"showPage('page2', this)"</span><span style="color:#93C5FD">&gt;</span>
+          <span style="color:#93C5FD">&lt;i</span> <span style="color:#FCA5A5">data-lucide</span>=<span style="color:#86EFAC">"settings"</span><span style="color:#93C5FD">&gt;&lt;/i&gt;</span> 功能二
+        <span style="color:#93C5FD">&lt;/div&gt;</span>
+      <span style="color:#93C5FD">&lt;/div&gt;</span>
+    <span style="color:#93C5FD">&lt;/aside&gt;</span>
+
+    <span style="color:#64748B">&lt;!-- 主内容区 --&gt;</span>
+    <span style="color:#93C5FD">&lt;main&gt;</span>
+      <span style="color:#93C5FD">&lt;div</span> <span style="color:#FCA5A5">id</span>=<span style="color:#86EFAC">"page1"</span><span style="color:#93C5FD">&gt;</span>
+        <span style="color:#64748B">&lt;!-- 页面内容 --&gt;</span>
+      <span style="color:#93C5FD">&lt;/div&gt;</span>
+    <span style="color:#93C5FD">&lt;/main&gt;</span>
+
+  <span style="color:#93C5FD">&lt;/div&gt;</span><span style="color:#64748B">&lt;!-- /.layout-body --&gt;</span>
+
+  <span style="color:#93C5FD">&lt;script&gt;</span>
+    lucide.createIcons();
+    function showPage(id, el) {
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      el.classList.add('active');
+      <span style="color:#64748B">// 切换内容区显示逻辑（按需修改）</span>
+    }
+  <span style="color:#93C5FD">&lt;/script&gt;</span>
+<span style="color:#93C5FD">&lt;/body&gt;</span>
+<span style="color:#93C5FD">&lt;/html&gt;</span></div>
+</div>
+
+<!-- ============================================================
+     快速开始 - CSS 变量系统
+     ============================================================ -->
+<div class="section" id="tokens">
+    <h2 class="section-title">
+        <i data-lucide="sliders" style="width:22px;height:22px;color:var(--primary-color)"></i>
+        CSS 变量系统
+    </h2>
+
+    <div class="preview-block">
+        <div class="preview-label"><i data-lucide="code" style="width:12px;height:12px"></i>&nbsp;Design Tokens — 直接复制到新系统的 :root{}</div>
+        <div style="padding:20px">
+<div class="code-block"><span class="code-tag">:root</span> {
+  <span class="code-comment">/* 主色 */</span>
+  <span class="code-attr">--primary-color</span>: <span class="code-value">#004EA1</span>;   <span class="code-comment">/* 主蓝，用于按钮/active/标题 */</span>
+  <span class="code-attr">--accent-color</span>:  <span class="code-value">#FF8D1C</span>;   <span class="code-comment">/* 辅橙，用于强调动作 */</span>
+  <span class="code-attr">--danger-color</span>:  <span class="code-value">#EF4444</span>;   <span class="code-comment">/* 危险/错误/删除 */</span>
+  <span class="code-attr">--success-color</span>: <span class="code-value">#10B981</span>;   <span class="code-comment">/* 成功/在线/通过 */</span>
+
+  <span class="code-comment">/* 背景 / 边框 / 文字 */</span>
+  <span class="code-attr">--bg-light</span>:      <span class="code-value">#F8FAFC</span>;   <span class="code-comment">/* 页面底色 */</span>
+  <span class="code-attr">--border-color</span>:  <span class="code-value">#E2E8F0</span>;   <span class="code-comment">/* 边框、分割线 */</span>
+  <span class="code-attr">--text-dark</span>:     <span class="code-value">#1E293B</span>;   <span class="code-comment">/* 主文字 */</span>
+  <span class="code-attr">--text-secondary</span>:<span class="code-value">#64748B</span>;   <span class="code-comment">/* 次要文字、导航项 */</span>
+  <span class="code-attr">--text-muted</span>:    <span class="code-value">#94A3B8</span>;   <span class="code-comment">/* 占位符、禁用 */</span>
+
+  <span class="code-comment">/* 布局尺寸 */</span>
+  <span class="code-attr">--sidebar-width</span>: <span class="code-value">200px</span>;
+  <span class="code-attr">--header-height</span>: <span class="code-value">60px</span>;
+
+  <span class="code-comment">/* 图标尺寸 */</span>
+  <span class="code-attr">--icon-size-nav</span>:    <span class="code-value">18px</span>;   <span class="code-comment">/* 导航图标 */</span>
+  <span class="code-attr">--icon-size-action</span>: <span class="code-value">14px</span>;   <span class="code-comment">/* 按钮内图标 */</span>
+}</div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

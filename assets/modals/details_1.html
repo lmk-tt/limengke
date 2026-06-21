@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CASE STUDY // 集团级多场景系统规范与 Vibe Coding 效能创新实践</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+        
+        :root {
+            --primary-color: #004EA1;
+            --accent-color: #FF8D1C;
+            --danger-color: #EF4444;
+            --success-color: #10B981;
+            --bg-light: #F8FAFC;
+            --border-color: #E2E8F0;
+            --text-dark: #1E293B;
+            --text-secondary: #64748B;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+            background-color: #F8FAFC;
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .tech-grid-bg {
+            background-image: 
+                linear-gradient(to right, rgba(0, 78, 161, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 78, 161, 0.03) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+        .tab-content {
+            display: block;
+        }
+        .tab-content.hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-[#004EA1]/10 selection:text-[#004EA1]">
+
+    <nav class="fixed top-0 inset-x-0 h-14 bg-white/80 backdrop-blur-md border-b border-slate-200/80 z-50 flex justify-between items-center">
+        <div class="flex items-center gap-3 px-8 md:px-16">
+            <div class="w-2.5 h-2.5 bg-[#004EA1] rounded-sm animate-pulse"></div>
+            <span class="mono text-xs font-bold tracking-wider text-slate-600">项目一：集团级多场景智能化系统组件规范</span>
+        </div>
+        <div class="hidden md:flex gap-8 text-sm font-medium text-slate-500 px-12 md:px-20">
+            <a href="#" onclick="switchTab('spec')" id="tab-spec" class="hover:text-[#004EA1] transition-colors font-semibold text-[#004EA1]">规范详情</a>
+            <a href="#" onclick="switchTab('cases')" id="tab-cases" class="hover:text-[#004EA1] transition-colors">项目案例</a>
+        </div>
+    </nav>
+
+    <div class="flex h-full pt-14">
+        <div class="w-full lg:w-6/12 bg-gray-50 border-r border-gray-200 flex flex-col">
+            <div class="bg-gray-100 px-3 py-1.5 border-b border-gray-200 flex items-center justify-between">
+                <span class="font-mono text-xs text-gray-500">UI 规范文档</span>
+                <a href="style-guide.html" target="_blank" class="text-xs text-[#004EA1] hover:underline flex items-center gap-1">
+                    打开新窗口
+                </a>
+            </div>
+            <iframe 
+                src="style-guide.html" 
+                frameborder="0" 
+                class="flex-1 w-full overflow-auto"
+                title="UI Style Guide">
+            </iframe>
+        </div>
+
+        <div class="flex-1 overflow-y-auto bg-white" style="height: 100vh;">
+            <div id="content-spec" class="tab-content active">
+            <header class="relative pt-8 pb-12 overflow-hidden bg-gradient-to-b from-slate-50 via-white to-slate-50 border-b border-slate-200/60 tech-grid-bg">
+                <div class="absolute -top-40 right-0 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none"></div>
+                <div class="max-w-3xl mx-auto px-6 md:px-12">
+                    
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-blue-200 bg-blue-50/50 text-[#004EA1] text-xs font-semibold mono mb-6">
+                        <span>MULTI-PROJECT COMPONENT SPECIFICATION</span>
+                    </div>
+                    
+                    <h1 class="text-slate-900 text-2xl md:text-4xl font-extrabold tracking-tight leading-tight max-w-3xl">
+                        集团级多场景智能化系统组件规范<br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#004EA1] to-[#0062cc]">与 Vibe Coding 效能创新实践</span>
+                    </h1>
+                    
+                    <p class="text-slate-500 text-sm md:text-base font-normal mt-4 max-w-xl leading-relaxed">
+                        面向工业制造领域多业务场景，构建从"全链路需求拆解"到"组件化Tokens约束"，再到"AI辅助前端代码秒级生成"的全新交付范式。
+                    </p>
+
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10 max-w-3xl">
+                        <div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm">
+                            <div class="text-[10px] uppercase font-bold text-slate-400 mono">UI 可复用性</div>
+                            <div class="text-xl font-bold text-[#004EA1] mt-1">100%</div>
+                            <div class="text-xs text-slate-500 mt-0.5">多项目视觉完全统一</div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm">
+                            <div class="text-[10px] uppercase font-bold text-slate-400 mono">代码生成速度</div>
+                            <div class="text-xl font-bold text-[#FF8D1C] mt-1">&lt; 5 Min</div>
+                            <div class="text-xs text-slate-500 mt-0.5">高保真页面初稿速度</div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm">
+                            <div class="text-[10px] uppercase font-bold text-slate-400 mono">沟通差距</div>
+                            <div class="text-xl font-bold text-emerald-500 mt-1">趋近于 0</div>
+                            <div class="text-xs text-slate-500 mt-0.5">需求直接映射标准组件</div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm">
+                            <div class="text-[10px] uppercase font-bold text-slate-400 mono">场景适配</div>
+                            <div class="text-xl font-bold text-indigo-500 mt-1">PC / Tablet</div>
+                            <div class="text-xs text-slate-500 mt-0.5">兼顾车间触屏与办公室</div>
+                        </div>
+                    </div>
+
+                </div>
+            </header>
+
+            <section class="bg-white border-b border-slate-200/80 py-8">
+                <div class="max-w-3xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+                    <div class="flex gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-[#004EA1] shrink-0 font-bold">01</div>
+                        <div>
+                            <h4 class="font-bold text-slate-800">统一设计规范制定</h4>
+                            <p class="text-slate-500 text-xs mt-1 leading-relaxed">主导确立色彩系统、8pt间距网格及组件库规范，消除多团队协作带来的视觉割裂感。</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-orange-50 flex items-center justify-center text-[#FF8D1C] shrink-0 font-bold">02</div>
+                        <div>
+                            <h4 class="font-bold text-slate-800">深度需求工程拆解</h4>
+                            <p class="text-slate-500 text-xs mt-1 leading-relaxed">深入大客户工业现场，梳理运维与管理员路径，输出标准化 P0/P1/P2 核心功能清单。</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-500 shrink-0 font-bold">03</div>
+                        <div>
+                            <h4 class="font-bold text-slate-800">Vibe Coding 效能落地</h4>
+                            <p class="text-slate-500 text-xs mt-1 leading-relaxed">将规范作为大模型上下文约束，编写精密提示词，快速产出可直接交付的高保真页面。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <main class="max-w-3xl mx-auto px-6 md:px-12 py-16 space-y-24">
+
+                <section id="background" class="space-y-6">
+                    <div>
+                        <span class="mono text-xs font-bold text-[#004EA1] tracking-widest block uppercase">01 / PROJECT CONTEXT</span>
+                        <h2 class="text-slate-900 text-xl md:text-2xl font-black mt-2 tracking-tight">多场景并行的交付危机</h2>
+                        <div class="w-10 h-1 bg-[#004EA1] mt-3"></div>
+                    </div>
+                    <div class="bg-white border border-slate-200 p-5 md:p-7 rounded-xl shadow-sm">
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            某大客户（工业制造领域）需在极短周期内并行构建多套智能化管理系统，业务边界横跨<b>设备实时监控、高密文件管理、数字化质量分析、以及全天候告警中心</b>。
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-3 text-xs">
+                            <div class="bg-red-50/50 border border-red-100 p-4 rounded-lg">
+                                <strong class="text-red-700 block mb-1">传统模式痛点：</strong>
+                                各业务项目各自为战，视觉组件碎片化，前端重复开发率居高不下，且大模型由于缺乏标准上下文，生成的代码可用度极低。
+                            </div>
+                            <div class="bg-emerald-50/50 border border-emerald-100 p-4 rounded-lg">
+                                <strong class="text-emerald-700 block mb-1">破局创新思路：</strong>
+                                跳出"画图+手写代码"的传统怪圈。通过PM的需求分析卡口，将功能点像素级映射到一套高内聚、易注入的《中天UI规范》中，打通 Vibe Coding 自动化前端交付管线。
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="specification" class="space-y-8">
+                    <div>
+                        <span class="mono text-xs font-bold text-[#004EA1] tracking-widest block uppercase">02 / DESIGN ARCHITECTURE</span>
+                        <h2 class="text-slate-900 text-xl md:text-2xl font-black mt-1 tracking-tight">构建高内聚的组件Spec规范体系</h2>
+                        <p class="text-slate-500 text-sm mt-2">
+                            拒绝无逻辑的散装样式。统一规范包含设计令牌（Tokens）、全场景页面布局及高复用组件库，一次定义，多项目共享。
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-sm">
+                        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="w-1.5 h-4 bg-[#004EA1] rounded-full"></span>
+                                    <h3 class="font-bold text-slate-800">1. 精密工程级 Design Tokens</h3>
+                                </div>
+                                <p class="text-slate-500 text-xs leading-relaxed mb-3">
+                                    严格推行基于 <b>8pt Grid 间距步进系统</b>。主色锚定中天高科技蓝（`#004EA1`），强调色使用工业安全活力橙（`#FF8D1C`），圆角规则从按钮控件（4px）到弹窗面板（8px）分级严密定义。
+                                </p>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded border border-slate-200 font-mono text-[11px] text-slate-600">
+                                --primary-color: #004EA1;<br>
+                                --space-gap-sm: 12px;<br>
+                                --border-radius-card: 8px;
+                            </div>
+                        </div>
+
+                        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="w-1.5 h-4 bg-[#FF8D1C] rounded-full"></span>
+                                    <h3 class="font-bold text-slate-800">2. 双端兼顾的标准侧边栏布局</h3>
+                                </div>
+                                <p class="text-slate-500 text-xs leading-relaxed mb-3">
+                                    针对办公环境采用 <b>200px 标准左侧三段式布局</b>；针对工厂车间的工业触摸屏设备，规范特别开辟了 <b>72px 窄侧边栏触控模式</b>（仅显示大图标+短标签，防止误触）。
+                                </p>
+                            </div>
+                            <div class="border border-slate-200 rounded overflow-hidden aspect-[4/3] relative bg-slate-50 p-1">
+                                <div class="w-full h-3 bg-[#004EA1] rounded-sm mb-1"></div>
+                                <div class="flex gap-1 h-[calc(100%-16px)]">
+                                    <div class="w-5 bg-white border border-slate-200 rounded flex flex-col items-center gap-1 pt-1"><div class="w-3 h-3 bg-slate-200 rounded-sm"></div><div class="w-3 h-3 bg-slate-200 rounded-sm"></div></div>
+                                    <div class="flex-1 bg-white border border-slate-200 rounded p-1"><div class="w-full h-full bg-slate-100 rounded-sm"></div></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="w-1.5 h-4 bg-emerald-500 rounded-full"></span>
+                                    <h3 class="font-bold text-slate-800">3. 指标卡片与 ECharts 级联</h3>
+                                </div>
+                                <p class="text-slate-500 text-xs leading-relaxed mb-3">
+                                    数据可视化层摒弃了随意的图表样式，统一规范了<b>统计数字卡片矩阵（Metric-Grid）</b>、设备率折线图、缺陷分布饼图及 CPU 实时仪表盘的配色与主题。
+                                </p>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded border border-slate-200 font-mono text-[10px] text-slate-400">
+                                chart.setOption({ <br>
+                                &nbsp;&nbsp;colorStops: ['#004EA1', 'rgba(0,78,161,0)']<br>
+                                });
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="engineering" class="space-y-6">
+                    <div>
+                        <span class="mono text-xs font-bold text-[#004EA1] tracking-widest block uppercase">03 / REQUIREMENT TO DESIGN</span>
+                        <h2 class="text-slate-900 text-xl md:text-2xl font-black tracking-tight">高精准需求分析与"无缝组件映射"</h2>
+                        <p class="text-slate-500 text-sm leading-relaxed mt-2">
+                            向产品经理（PM）转型的关键一步：拒绝含糊不清的需求描述，建立一套从<b>业务调研到组件映射</b>的严密转化链条。
+                        </p>
+                        <blockquote class="border-l-2 border-[#FF8D1C] pl-4 text-xs italic text-slate-500 py-1 mt-2">
+                            "每一个功能点，都在规范文件中拥有唯一的组件解。"
+                        </blockquote>
+                    </div>
+
+                    <div class="space-y-5">
+                        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+                            <h3 class="text-slate-800 text-sm font-bold mb-4 flex items-center gap-2">
+                                <span class="w-2 h-2 bg-[#FF8D1C] rounded-full"></span> PM 结构化业务需求调研方法
+                            </h3>
+                            <div class="grid grid-cols-2 gap-3 text-xs">
+                                <div class="p-3 bg-slate-50 rounded border border-slate-100">
+                                    <span class="font-bold text-[#004EA1] block mb-1">1. 业务调研 (Pain Points)</span>
+                                    与客户及车间一线深度沟通核心痛点（如：设备异动响应滞后、技术资料检索混乱）。
+                                </div>
+                                <div class="p-3 bg-slate-50 rounded border border-slate-100">
+                                    <span class="font-bold text-[#004EA1] block mb-1">2. 场景梳理 (User Persona)</span>
+                                    精准识别典型用户角色（如：现场运维人员、系统管理员、厂区质检员）的操作路径。
+                                </div>
+                                <div class="p-3 bg-slate-50 rounded border border-slate-100">
+                                    <span class="font-bold text-[#004EA1] block mb-1">3. 功能拆解 (Priority Slicing)</span>
+                                    按核心业务模块精细化划分功能点，严格标注优先级（P0核心 / P1次要 / P2延伸拓展）。
+                                </div>
+                                <div class="p-3 bg-slate-50 rounded border border-slate-100">
+                                    <span class="font-bold text-[#004EA1] block mb-1">4. 交互定义 (Feedback Loop)</span>
+                                    清晰、定量定义每个关键操作的触发方式、反馈延迟阈值以及全局异常兜底逻辑。
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                            <div class="bg-slate-50 px-5 py-3 border-b border-slate-200 flex justify-between items-center">
+                                <span class="text-xs font-bold text-slate-700">核心业务清单至 UI 组件库的映射矩阵</span>
+                                <span class="text-[10px] mono bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded border border-emerald-200">MAPPING_MATRIX_ACTIVE</span>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse text-xs">
+                                    <thead>
+                                        <tr class="bg-slate-50/50 border-b border-slate-200 text-slate-500">
+                                            <th class="p-3 pl-5">调研拆解功能点</th>
+                                            <th class="p-3">优先级</th>
+                                            <th class="p-3">映射规范组件名</th>
+                                            <th class="p-3 pr-5">交互与反馈定义</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-100 text-slate-600">
+                                        <tr>
+                                            <td class="p-3 pl-5 font-medium text-slate-800">技术、商务文件核心列表</td>
+                                            <td class="p-3"><span class="px-2 py-0.5 rounded bg-red-50 text-red-600 font-bold scale-90">P0</span></td>
+                                            <td class="p-3 mono text-[#004EA1]">.table-wrapper</td>
+                                            <td class="p-3 text-slate-500">支持行高阅读调优、文字超长自动省略</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-3 pl-5 font-medium text-slate-800">完成/处理中/失败 业务状态</td>
+                                            <td class="p-3"><span class="px-2 py-0.5 rounded bg-red-50 text-red-600 font-bold scale-90">P0</span></td>
+                                            <td class="p-3 mono text-[#004EA1]">.badge / .status-dot</td>
+                                            <td class="p-3 text-slate-500">已完成染绿，处理中染橙，伴有状态点微发光</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-3 pl-5 font-medium text-slate-800">大文件无感知拖拽上传</td>
+                                            <td class="p-3"><span class="px-2 py-0.5 rounded bg-orange-50 text-orange-600 font-bold scale-90">P1</span></td>
+                                            <td class="p-3 mono text-[#004EA1]">.upload-dropzone</td>
+                                            <td class="p-3 text-slate-500">支持单文件最高 50MB，拖拽时背景虚线色块高亮</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-3 pl-5 font-medium text-slate-800">新建/编辑资料表单</td>
+                                            <td class="p-3"><span class="px-2 py-0.5 rounded bg-orange-50 text-orange-600 font-bold scale-90">P1</span></td>
+                                            <td class="p-3 mono text-[#004EA1]">.modal-overlay / .form-control</td>
+                                            <td class="p-3 text-slate-500">遮罩层淡入平滑，输入框 Focus 时触发中天蓝外发光</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="vibecoding" class="space-y-8">
+                    <div>
+                        <span class="mono text-xs font-bold text-[#004EA1] tracking-widest block uppercase">04 / VIBE CODING WORKFLOW</span>
+                        <h2 class="text-slate-900 text-xl md:text-2xl font-black mt-1 tracking-tight">基于 AI 统一上下文的 Vibe Coding 实战</h2>
+                        <p class="text-slate-500 text-sm mt-2">
+                            通过将《UI 规范》中的 CSS 变量与 HTML 组件作为大模型（LLM）的常驻上下文输入，编写高度精密的结构化提示词，使 AI 能够直接输出符合企业生产标准的零偏离高保真代码。
+                        </p>
+                    </div>
+
+                    <div class="bg-white border border-slate-200 rounded-xl p-5 md:p-7 shadow-sm">
+                        <h3 class="font-bold text-slate-800 text-sm mb-5 mono">效能闭环交付工作流 (The Efficiency Closed Loop)</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-5 gap-3 text-center text-xs relative">
+                            <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg relative z-10">
+                                <div class="font-mono text-[#004EA1] font-bold mb-1">STEP_01</div>
+                                <span class="font-semibold text-slate-700 block">功能需求清单</span>
+                                <p class="text-[11px] text-slate-400 mt-1">PM精准拆解业务字段</p>
+                            </div>
+                            <div class="flex items-center justify-center text-slate-300 font-bold hidden md:flex">➔</div>
+                            <div class="p-3 bg-blue-50 border border-blue-100 rounded-lg relative z-10">
+                                <div class="font-mono text-[#004EA1] font-bold mb-1">STEP_02</div>
+                                <span class="font-semibold text-slate-700 block">AI 提示词工程</span>
+                                <p class="text-[11px] text-slate-400 mt-1">规范Tokens注入常驻上下文</p>
+                            </div>
+                            <div class="flex items-center justify-center text-slate-300 font-bold hidden md:flex">➔</div>
+                            <div class="p-3 bg-orange-50 border border-orange-100 rounded-lg relative z-10">
+                                <div class="font-mono text-[#FF8D1C] font-bold mb-1">STEP_03</div>
+                                <span class="font-semibold text-slate-700 block">高保真页面生成</span>
+                                <p class="text-[11px] text-slate-400 mt-1">LLM秒级渲染标准DOM</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+                        <div class="lg:col-span-7 bg-slate-900 text-slate-100 p-5 rounded-xl border border-slate-800 font-mono text-xs space-y-3 flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-center text-slate-500 border-b border-slate-800 pb-3 mb-3">
+                                    <span>LLM提示词工程模板</span>
+                                    <span class="text-amber-400">上下文已锁定</span>
+                                </div>
+                                <p class="text-slate-400 italic">"请基于附件中《中天项目UI规范》的CSS变量系统和核心组件样式，为我生成一个高复用的文件管理子系统页面：</p>
+                                <p class="text-[#86EFAC]"><span class="text-purple-400">1. 结构要求：</span>必须包含顶部面包屑搜索栏、P0级新增文件按钮、标准文件数据表格（包含文件名、类别、上传时间、状态标识、操作图标列）、以及下方的标准分页组件。</p>
+                                <p class="text-[#86EFAC]"><span class="text-purple-400">2. 变量约束：</span>颜色必须且仅能使用 `--primary-color`（主蓝）和 `--accent-color`（辅橙），格线混合模式必须设为 `overlay`。"</p>
+                            </div>
+                            <div class="bg-slate-950 p-2.5 rounded border border-slate-800/60 text-[11px] text-slate-500 text-right">
+                                核心产出：多项目高保真 HTML 前端页面直接秒级输出
+                            </div>
+                        </div>
+
+                        <div class="lg:col-span-5 bg-white border border-slate-200 p-5 rounded-xl shadow-sm flex flex-col justify-between">
+                            <div>
+                                <span class="mono text-[10px] font-bold text-slate-400 block uppercase">专业复盘</span>
+                                <h4 class="text-slate-900 font-bold text-base mt-1">思考沉淀：一次定义，长久赋能</h4>
+                                <p class="text-slate-500 text-xs leading-relaxed mt-3">
+                                    在过去，并行推进 4 个不同维度的智能化子系统（监控、文件、质量、告警）需要至少 2 名设计师与 3 名独立前端紧密对接两周以上。
+                                </p>
+                                <p class="text-slate-500 text-xs leading-relaxed mt-2">
+                                    引入 <b>UI规范体系 + Vibe Coding</b> 交付链路后，设计规范成为了 AI 的"硬性逻辑铁轨"。我一个人在承担 PM 需求调研的同时，通过精密提示词在 3 天内完成了全部子系统高保真原型的快速构建与极速迭代，实现了效能的代际跨越。
+                                </p>
+                            </div>
+                            <div class="border-t border-slate-100 pt-3 flex items-center justify-between text-xs font-mono text-[#004EA1] font-semibold mt-4 cursor-pointer hover:text-blue-600 transition-colors" onclick="switchTab('cases')">
+                                <span>下一步：进入项目案例</span>
+                                <span>➔</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+
+            <footer class="border-t border-slate-200 bg-white py-8 text-center">
+            </footer>
+            </div>
+
+            <div id="content-cases" class="tab-content hidden">
+                <div class="py-16 px-6 md:px-12 max-w-3xl mx-auto">
+                    <div class="mb-12">
+                        <span class="mono text-xs font-bold text-[#004EA1] tracking-widest block uppercase">PROJECT CASES</span>
+                        <h2 class="text-slate-900 text-xl md:text-2xl font-black mt-2 tracking-tight">项目案例展示</h2>
+                        <div class="w-10 h-1 bg-[#004EA1] mt-3"></div>
+                    </div>
+
+                    <div class="space-y-16">
+                        <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+                            <div class="flex items-center gap-3 mb-6">
+                                <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-[#004EA1] shrink-0 font-bold">01</div>
+                                <div>
+                                    <h3 class="font-bold text-slate-800 text-lg">AI安全行为识别平台</h3>
+                                    <p class="text-slate-500 text-xs mt-1">基于计算机视觉的工业安全监控系统</p>
+                                </div>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                                    <img src="../images/work_1/02-1.png" alt="AI安全行为识别平台-1" class="w-full h-auto object-contain">
+                                </div>
+                                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                                    <img src="../images/work_1/02-2.png" alt="AI安全行为识别平台-2" class="w-full h-auto object-contain">
+                                </div>
+                                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                                    <img src="../images/work_1/02-3.jpg" alt="AI安全行为识别平台-3" class="w-full h-auto object-contain">
+                                </div>
+                                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                                    <img src="../images/work_1/02-4.png" alt="AI安全行为识别平台-4" class="w-full h-auto object-contain">
+                                </div>
+                                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                                    <img src="../images/work_1/02-5.png" alt="AI安全行为识别平台-5" class="w-full h-auto object-contain">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+                            <div class="flex items-center gap-3 mb-6">
+                                <div class="w-8 h-8 rounded-lg bg-orange-50 flex items-center justify-center text-[#FF8D1C] shrink-0 font-bold">02</div>
+                                <div>
+                                    <h3 class="font-bold text-slate-800 text-lg">投标文件生成平台</h3>
+                                    <p class="text-slate-500 text-xs mt-1">智能化文档管理与生成系统</p>
+                                </div>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                                    <img src="../images/work_1/03-1.png" alt="投标文件生成平台-1" class="w-full h-auto object-contain">
+                                </div>
+                                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                                    <img src="../images/work_1/03-2.png" alt="投标文件生成平台-2" class="w-full h-auto object-contain">
+                                </div>
+                                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                                    <img src="../images/work_1/03-4.png" alt="投标文件生成平台-4" class="w-full h-auto object-contain">
+                                </div>
+                                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                                    <img src="../images/work_1/03-5.png" alt="投标文件生成平台-5" class="w-full h-auto object-contain">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+                            <div class="flex items-center gap-3 mb-6">
+                                <div class="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-500 shrink-0 font-bold">03</div>
+                                <div>
+                                    <h3 class="font-bold text-slate-800 text-lg">智能标签检测系统</h3>
+                                    <p class="text-slate-500 text-xs mt-1">自动化标签识别与质量检测系统</p>
+                                </div>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                                    <img src="../images/work_1/04-1.png" alt="智能标签检测系统-1" class="w-full h-auto object-contain">
+                                </div>
+                                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                                    <img src="../images/work_1/04-2.png" alt="智能标签检测系统-2" class="w-full h-auto object-contain">
+                                </div>
+                                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                                    <img src="../images/work_1/04-3.png" alt="智能标签检测系统-3" class="w-full h-auto object-contain">
+                                </div>
+                                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                                    <img src="../images/work_1/04-4.png" alt="智能标签检测系统-4" class="w-full h-auto object-contain">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+                            <div class="flex items-center gap-3 mb-6">
+                                <div class="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-500 shrink-0 font-bold">04</div>
+                                <div>
+                                    <h3 class="font-bold text-slate-800 text-lg">智能余料管理系统</h3>
+                                    <p class="text-slate-500 text-xs mt-1">智能化物料剩余管理与优化系统</p>
+                                </div>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                                    <img src="../images/work_1/05-1.png" alt="智能余料管理系统-1" class="w-full h-auto object-contain">
+                                </div>
+                                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                                    <img src="../images/work_1/05-2.jpg" alt="智能余料管理系统-2" class="w-full h-auto object-contain">
+                                </div>
+                                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                                    <img src="../images/work_1/05-3.jpg" alt="智能余料管理系统-3" class="w-full h-auto object-contain">
+                                </div>
+                                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                                    <img src="../images/work_1/05-4.png" alt="智能余料管理系统-4" class="w-full h-auto object-contain">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tab) {
+            const tabSpec = document.getElementById('tab-spec');
+            const tabCases = document.getElementById('tab-cases');
+            const contentSpec = document.getElementById('content-spec');
+            const contentCases = document.getElementById('content-cases');
+            
+            if (tab === 'spec') {
+                tabSpec.classList.add('font-semibold', 'text-[#004EA1]');
+                tabSpec.classList.remove('text-slate-500');
+                tabCases.classList.remove('font-semibold', 'text-[#004EA1]');
+                tabCases.classList.add('text-slate-500');
+                contentSpec.classList.remove('hidden');
+                contentSpec.classList.add('active');
+                contentCases.classList.add('hidden');
+                contentCases.classList.remove('active');
+            } else {
+                tabCases.classList.add('font-semibold', 'text-[#004EA1]');
+                tabCases.classList.remove('text-slate-500');
+                tabSpec.classList.remove('font-semibold', 'text-[#004EA1]');
+                tabSpec.classList.add('text-slate-500');
+                contentCases.classList.remove('hidden');
+                contentCases.classList.add('active');
+                contentSpec.classList.add('hidden');
+                contentSpec.classList.remove('active');
+            }
+        }
+    </script>
+</body>
+</html>

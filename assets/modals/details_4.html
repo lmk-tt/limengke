@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CASE STUDY 灵眸 —— AI视觉训推平台</title>
+    <!-- 引入 Tailwind CSS 构建现代 SaaS 极简视效 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        /* 灵眸标志性：半透明玻璃态与微边框 */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(249, 115, 22, 0.08);
+        }
+        /* 微光流动装饰背景 */
+        .gradient-mesh {
+            background: radial-gradient(circle at 80% 20%, rgba(249, 115, 22, 0.04) 0%, transparent 40%),
+                        radial-gradient(circle at 10% 80%, rgba(6, 182, 212, 0.03) 0%, transparent 50%);
+        }
+    </style>
+</head>
+<body class="antialiased gradient-mesh selection:bg-orange-500/10 selection:text-orange-600">
+
+    <!-- 顶部极简毛玻璃导航栏 -->
+    <nav class="fixed top-0 inset-x-0 h-14 bg-white/70 backdrop-blur-md border-b border-slate-200/60 z-50 px-6 md:px-12 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <!-- 品牌眼眸图形几何象征 -->
+            <div class="w-3.5 h-3.5 bg-orange-500 rounded-full flex items-center justify-center">
+                <div class="w-1.5 h-1.5 bg-white rounded-full"></div>
+            </div>
+            <span class="mono text-xs font-bold tracking-widest text-slate-600">项目四：灵眸AI视觉训推平台</span>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION 极简通透封面区 -->
+    <header class="relative pt-28 pb-16 md:py-32 overflow-hidden border-b border-slate-200/50">
+        <div class="max-w-6xl mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <!-- 左侧核心背景文本 -->
+            <div class="lg:col-span-5 z-10 space-y-6">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-orange-500/20 bg-orange-500/5 text-orange-600 text-xs font-mono font-semibold">
+                    <span>AI VISION PLATFORM</span>
+                </div>
+                <h1 class="text-slate-900 text-4xl md:text-5xl font-extrabold tracking-tight leading-none">
+                    灵眸 —— <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600">AI视觉训推平台</span>
+                </h1>
+                <p class="text-slate-500 text-sm md:text-base font-normal leading-relaxed max-w-xl">
+                    面向 AI 算法团队的一站式训推控制台，打通模型仓库、模型训练、算法管理、硬件管理等核心业务生命周期。
+                </p>
+                <div class="pt-4 grid grid-cols-2 gap-4 border-t border-slate-200 text-xs">
+                    <div>
+                        <span class="text-slate-400 block mono uppercase">设计定位</span>
+                        <span class="text-slate-700 font-semibold">品牌活力橙 + 清澈通透感</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-400 block mono uppercase">我的角色</span>
+                        <span class="text-orange-600 font-bold">UI/UX Designer (从0到1)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧产品首屏视觉（00.jpg） -->
+            <div class="lg:col-span-7">
+                <div class="relative bg-white border border-slate-200/80 rounded-2xl p-2.5 shadow-xl shadow-slate-100/50 group">
+                    <img src="../images/work_4/00.jpg" alt="灵眸系统欢迎首页" class="w-full h-auto rounded-xl object-cover aspect-video">
+                    <div class="absolute bottom-5 right-5 bg-black/80 text-white font-mono text-[9px] px-2.5 py-1 rounded border border-white/10 shadow-lg backdrop-blur-md">
+                        [系统欢迎界面]
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- BRAND METRICS 品牌调性与竞品差异分析 -->
+    <section id="brand" class="bg-white border-b border-slate-200/60 py-12">
+        <div class="max-w-6xl mx-auto px-6 md:px-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-xs font-mono">
+                <div>
+                    <span class="text-slate-400 block mb-1 font-bold">品牌关键词</span>
+                    <p class="text-slate-800 text-sm font-bold">智能、敏锐、专业、可靠</p>
+                </div>
+                <div>
+                    <span class="text-slate-400 block mb-1">意象图片</span>
+                    <p class="text-slate-600 font-normal">“灵眸”——意象为AI的眼睛，旨在洞察海量数据的底层本质。</p>
+                </div>
+                <div>
+                    <span class="text-slate-400 block mb-1">设计差异化</span>
+                    <p class="text-slate-600 font-normal">区别于传统机器学习平台的冰冷刻板感，注入“灵性”与“温度”。</p>
+                </div>
+                <div>
+                    <span class="text-slate-400 block mb-1">布局架构</span>
+                    <p class="text-slate-600 font-normal">经典B端左侧9大硬核导航群组 + 右侧全呼吸感高阶工作区。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN PROJECT PERSPECTIVES -->
+    <main class="max-w-6xl mx-auto px-6 md:px-12 py-20 space-y-32">
+
+        <!-- SECTION 02: 首页/数据看板与核心训练全链路 -->
+        <section id="dashboard" class="space-y-12">
+            <div class="max-w-3xl">
+                <span class="mono text-xs text-orange-500 tracking-widest block font-bold uppercase">02 / INTERFACE LAYER 01</span>
+                <h2 class="text-slate-900 text-2xl md:text-3xl font-black mt-1 tracking-tight">资产聚合首页与高频模型训练看板</h2>
+                <p class="text-slate-500 text-xs md:text-sm mt-2">
+                    通过顶部清透的 3D 图表资产卡片（数据集资产 20 个、模型资产 20 个）建立即时宏观认知；下钻至模型训练页，通过清晰的版本层级划分（V1-V4）保证超高可用性。
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <!-- 01_3.jpg 模型训练看板展示 -->
+                <div class="lg:col-span-7 relative bg-white border border-slate-200 p-2 rounded-xl shadow-md">
+                    <img src="../images/work_4/01.jpg" alt="模型训练管理页面" class="w-full h-auto rounded-lg object-cover aspect-video">
+                    <span class="absolute bottom-4 right-4 bg-black/80 text-[9px] text-slate-400 border border-zinc-800 mono px-2 py-0.5 rounded">[训练矩阵]</span>
+                </div>
+                <!-- 业务功能解析说明卡 -->
+                <div class="lg:col-span-5 space-y-4">
+                    <div class="text-[11px] font-mono text-slate-400 tracking-wider uppercase">核心布局映射</div>
+                    <h3 class="text-slate-900 text-lg font-bold">满足算法工程师的高频快捷操作</h3>
+                    <p class="text-slate-600 text-xs leading-relaxed font-normal">
+                        在模型训练列表中，表格操作区设计为<b>“再次训练、验证、下载、删除”多核心动作并存</b>。右侧并联清晰进度条（如 45% 进度及剩余时间提示），帮助算法工程师进行多任务并行下的精细化排班调度。
+                    </p>
+                    <div class="bg-slate-50 p-4 border border-slate-200/60 rounded-xl font-mono text-xs space-y-1 text-slate-500">
+                        <p class="text-slate-700 font-bold">■ 9大核心模组无缝路由：</p>
+                        <p>首页 / 模型仓库 / 数据管理 / 模型训练 / 算法管理 / 镜像管理 / 硬件管理 / 算法中心 / 告警记录</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 03: 模型仓库与算法推理验证闭环 -->
+        <section id="warehouse" class="space-y-16">
+            <div class="border-b border-slate-200/80 pb-4">
+                <span class="mono text-xs text-orange-500 tracking-widest block font-bold uppercase">03 / INTERFACE LAYER 02</span>
+                <h2 class="text-slate-900 text-2xl md:text-3xl font-black mt-1 tracking-tight">模型全生命周期闭环：导入、迭代与视觉验证</h2>
+            </div>
+
+            <!-- 02_3.jpg 模型仓库全生命周期 -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-5 space-y-4">
+                    <div class="text-xs font-mono text-slate-400">组件A 模型仓库管理</div>
+                    <h3 class="text-slate-900 text-lg font-bold">多版本模型树形分级治理</h3>
+                    <p class="text-slate-600 text-xs leading-relaxed font-normal">
+                        模型仓库清晰界定<b>"导入模型"与"训练模型"</b>两大部分。筛选区提供多条件交织搜索，支持同一模型下 V1 至 V4 历史版本的优雅折叠展现，底部内嵌 P0 级批量删除组件，极大提升高频操作的准确率。
+                    </p>
+                    <div class="border-l-2 border-orange-500 pl-4 py-1 text-xs font-mono text-slate-500 italic">
+                        设计核心在于将高维度的算法参数隐藏在清爽的层级结构之后，用数据密度服务核心效率。
+                    </div>
+                </div>
+                <div class="lg:col-span-7 bg-white border border-slate-200 p-2 rounded-xl shadow-md relative">
+                    <img src="../images/work_4/02.jpg" alt="模型仓库多版本列表" class="w-full h-auto rounded-lg object-cover aspect-video">
+                    <span class="absolute bottom-4 right-4 bg-black/80 text-[9px] text-white mono px-2 py-0.5 rounded">[仓库版本树]</span>
+                </div>
+            </div>
+
+            <!-- v2-1.jpg 算法模型验证下钻 -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center pt-8">
+                <div class="lg:col-span-7 bg-white border border-slate-200 p-2 rounded-xl shadow-md relative order-last lg:order-first">
+                    <img src="../images/work_4/2-1.jpg" alt="算法模型检测验证界面" class="w-full h-auto rounded-lg object-cover aspect-video">
+                    <span class="absolute bottom-4 right-4 bg-black/80 text-[9px] text-white mono px-2 py-0.5 rounded">[IMG_2-1 VALIDATION_SANDBOX]</span>
+                </div>
+                <div class="lg:col-span-5 space-y-4">
+                    <div class="text-xs font-mono text-slate-400">组件B 模型验证沙盒</div>
+                    <h3 class="text-slate-900 text-lg font-bold">可视化模型验证沙盒（Notebook集成）</h3>
+                    <p class="text-slate-600 text-xs leading-relaxed font-normal">
+                        点击"验证"按纽，平台无缝下钻至单模验证沙盒。左侧引入<b>多目标实时渲染 bounding-box（如行人识别 person 0.90）</b>，右侧支持算法工程师进行硬件 GPU 分配（空闲GPU数量联动展示）和底层特征键值对参数调整。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 04: 算法平台、任务管理与视频流接入工程 -->
+        <section id="algorithm" class="space-y-12">
+            <div class="max-w-3xl">
+                <span class="mono text-xs text-orange-500 tracking-widest block font-bold uppercase">04 / INTERFACE LAYER 03</span>
+                <h2 class="text-slate-900 text-2xl md:text-3xl font-black mt-1 tracking-tight">工程落地延伸：算法平台任务管理与视频流管理</h2>
+                <p class="text-slate-500 text-xs md:text-sm mt-2">
+                    训推平台除了在云端控制算法训练，更需要对一线物理车间的硬件视频输入、通道联通状态及多项目矩阵进行系统级覆盖。
+                </p>
+            </div>
+
+            <!-- 四宫格工程细节图（06.jpg / 07.jpg / 08.jpg / 09.jpg） -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
+                <!-- 06.jpg 任务管理 -->
+                <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm flex flex-col justify-between">
+                    <img src="../images/work_4/06.jpg" alt="算法任务管理" class="w-full h-auto rounded-lg mb-3 object-cover aspect-video border border-slate-100">
+                    <div>
+                        <div class="text-[11px] font-mono text-slate-400 mb-1">任务管理</div>
+                        <h4 class="text-slate-900 font-bold mb-1">算法任务管理看板</h4>
+                        <p class="text-slate-500 text-[11px] leading-normal">提供完备的通道状态映射，对视频源及上报地址进行列表化呈现，包含停用、编辑、配置区域三大核心动作。</p>
+                    </div>
+                </div>
+
+                <!-- 07.jpg 视频实况 -->
+                <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm flex flex-col justify-between">
+                    <img src="../images/work_4/07.jpg" alt="视频实况流接入" class="w-full h-auto rounded-lg mb-3 object-cover aspect-video border border-slate-100">
+                    <div>
+                        <div class="text-[11px] font-mono text-slate-400 mb-1">VIDEO_STREAM_REALTIME</div>
+                        <h4 class="text-slate-900 font-bold mb-1">通道视频实况流监测</h4>
+                        <p class="text-slate-500 text-[11px] leading-normal">支持任务通道（通道 1、通道 2、通道 3）随动切换，流媒体播放器内嵌微边框，实时映射模型在线跑推画面。</p>
+                    </div>
+                </div>
+
+                <!-- 08.jpg 视频源管理 -->
+                <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm flex flex-col justify-between">
+                    <img src="../images/work_4/08.jpg" alt="视频源输入" class="w-full h-auto rounded-lg mb-3 object-cover aspect-video border border-slate-100">
+                    <div>
+                        <div class="text-[11px] font-mono text-slate-400 mb-1">RTSP视频源输入</div>
+                        <h4 class="text-slate-900 font-bold mb-1">高密度视频源拉流配置</h4>
+                        <p class="text-slate-500 text-[11px] leading-normal">对拉流地址（如 <code>rtsp://admin:admin123@...</code>）及描述信息进行规范化录入与在线校验，支持新增视频源秒级连通。</p>
+                    </div>
+                </div>
+
+                <!-- 09.jpg 项目管理 -->
+                <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm flex flex-col justify-between">
+                    <img src="../images/work_4/09.jpg" alt="多项目大群组" class="w-full h-auto rounded-lg mb-3 object-cover aspect-video border border-slate-100">
+                    <div>
+                        <div class="text-[11px] font-mono text-slate-400 mb-1">全部项目群组</div>
+                        <h4 class="text-slate-900 font-bold mb-1">集团级多项目平行解耦群组</h4>
+                        <p class="text-slate-500 text-[11px] leading-normal">支持创建多个平行解耦的子项目，快速批量过滤和删除，完美契合多任务敏捷交付需求。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 补充展示图 03 / 04 / 05 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs mt-8">
+                <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm flex flex-col justify-between">
+                    <img src="../images/work_4/03.jpg" alt="系统界面03" class="w-full h-auto rounded-lg mb-3 object-cover aspect-video border border-slate-100">
+                    <div>
+                        <h4 class="text-slate-900 font-bold mb-1">算法管理</h4>
+                    </div>
+                </div>
+
+                <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm flex flex-col justify-between">
+                    <img src="../images/work_4/04.jpg" alt="系统界面04" class="w-full h-auto rounded-lg mb-3 object-cover aspect-video border border-slate-100">
+                    <div>
+                        <h4 class="text-slate-900 font-bold mb-1">系统管理/用户</h4>
+                    </div>
+                </div>
+
+                <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm flex flex-col justify-between">
+                    <img src="../images/work_4/05.jpg" alt="系统界面05" class="w-full h-auto rounded-lg mb-3 object-cover aspect-video border border-slate-100">
+                    <div>
+                        <h4 class="text-slate-900 font-bold mb-1">系统管理/日志</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 05: 量化成果与高管设计复盘 -->
+        <section class="border-t border-slate-200/60 pt-16">
+            <div class="max-w-3xl mb-12">
+                <span class="mono text-xs text-orange-500 tracking-widest block font-bold uppercase">05 / CURATED EXPERT DESIGN METRIC</span>
+                <h2 class="text-slate-900 text-2xl md:text-3xl font-black mt-1">设计成果归档与多维效能复盘</h2>
+            </div>
+
+            <!-- 数据成果网格 -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-xs mb-12">
+                <div class="bg-white border border-slate-200/60 p-4 rounded-xl shadow-sm">
+                    <span class="text-slate-400 block mb-1 font-mono">品牌标识</span>
+                    <span class="text-slate-900 text-base font-bold">0 到 1 定义"灵眸"视觉语言</span>
+                </div>
+                <div class="bg-white border border-slate-200/60 p-4 rounded-xl shadow-sm">
+                    <span class="text-slate-400 block mb-1 font-mono">页面数量</span>
+                    <span class="text-slate-900 text-base font-bold">覆盖 10+ 核心模块群组</span>
+                </div>
+                <div class="bg-white border border-slate-200/60 p-4 rounded-xl shadow-sm">
+                    <span class="text-slate-400 block mb-1 font-mono">组件库</span>
+                    <span class="text-slate-900 text-base font-bold">全选筛选、搜索、状态组件规范化</span>
+                </div>
+                <div class="bg-white border border-slate-200/60 p-4 rounded-xl shadow-sm">
+                    <span class="text-slate-400 block mb-1 font-mono">业务生命周期</span>
+                    <span class="text-orange-600 text-base font-bold">模型全生命周期完美闭环</span>
+                </div>
+            </div>
+
+            <!-- 深度专家思考沉淀 -->
+            <div class="bg-white border border-slate-200 p-6 md:p-8 rounded-2xl shadow-sm space-y-4">
+                <h4 class="text-slate-900 font-bold text-sm mono">设计复盘 深度思考与未来演进计划</h4>
+                <p class="text-slate-500 text-xs leading-relaxed font-normal">
+                    <b>品牌调性先行策略：</b> 在处理复杂的机器学习 B 端平台时，过往的设计往往极易陷入极度冷峻的死胡同。我们首先确立了"灵眸"的温润视觉意象，利用清澈的毛玻璃卡片质感，建立算法的"透明度与确定性"，大幅缓解算法工程师长期高频操作下的压抑感。
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 极简高阶页脚 -->
+    <footer class="border-t border-slate-200/80 bg-white py-12 text-center">
+    </footer>
+
+</body>
+</html>
